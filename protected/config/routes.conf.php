@@ -18,6 +18,9 @@ $route['*']['/'] = array('MainController', 'index');
 $route['*']['/error'] = array('ErrorController', 'index');
 
 //Sesiones
-$route['*']['/API/login'] = array('loginController', 'login');
+$route['post']['/API/login'] = array('loginController', 'login');
+
+//Representante
+$route['*']['/API/representante/getPlanTrabajo/:usuario/:token'] = array('planTrabajoController','obtenerPlanTrabajo');
 
 ?>

@@ -16,10 +16,10 @@ class loginController extends DooController{
             if($usuario){
                 //El usuario y la contraseñas son correctas
                 $usuario->ultimo_acceso = new DooDbExpression("NOW()");
-                $usuario->token = md5(date("Ymd").$usuario->email);
+                $usuario->token = md5(date("Ymd").$usuario->usuario);
                 $usuario->update();
                 $result = array(
-                            'usuario'=>$usuario->email,
+                            'usuario'=>$usuario->usuario,
                             'tipoUsuario'=>$usuario->id_tipo_usuario,
                             'token'=>$usuario->token
                         );
