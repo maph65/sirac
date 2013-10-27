@@ -1,32 +1,16 @@
 <?php
+
+Doo::loadCore('db/DooModel');
 class ctPrescriptor extends DooModel{
-    private $idPrescriptor;
-    private $tipoPrescriptor;
+    public $id_prescriptor;
+    public $tipo_prescriptor;
     
-    private $_table = 'ct_prescriptor';
-    private $_primarykey = 'id_prescriptor';
-    private $_fields = array('id_prescriptor','tipo_prescriptor');
+    public $_table = 'ct_prescriptor';
+    public $_primarykey = 'id_prescriptor';
+    public $_fields = array('id_prescriptor','tipo_prescriptor');
     
     function __construct(){
         parent::$className = __CLASS__;
     }
-    
-    public function getIdPrescriptor() {
-        return $this->idPrescriptor;
-    }
-
-    public function setIdPrescriptor($idPrescriptor) {
-        $this->idPrescriptor = $idPrescriptor;
-    }
-
-    public function getTipoPrescriptor() {
-        return $this->tipoPrescriptor;
-    }
-
-    public function setTipoPrescriptor($tipoPrescriptor) {
-        $this->tipoPrescriptor = $tipoPrescriptor;
-    }
-
-
 }
 ?>

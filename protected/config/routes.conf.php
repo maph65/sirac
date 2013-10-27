@@ -17,4 +17,7 @@
 $route['*']['/'] = array('MainController', 'index');
 $route['*']['/error'] = array('ErrorController', 'index');
 
+//Sesiones
+$route['*']['/login'] = array('loginController', 'login');
+
 ?>
