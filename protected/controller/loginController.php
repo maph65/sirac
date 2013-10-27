@@ -5,12 +5,12 @@ class loginController extends DooController{
         Doo::loadModel('ctUsuario');
         Doo::autoload('DooDbExpression');
         $result = array();
-	if(!isset($_GET['email']) || !isset($_GET['passwd'])){
+	if(!isset($_POST['email']) || !isset($_POST['passwd'])){
             $result = array('error'=>'incompleto');
         }else{
             $usuario = new ctUsuario();
-            $usuario->email = stripslashes($_GET['email']);
-            $usuario->passwd = stripslashes($_GET['passwd']);
+            $usuario->email = stripslashes($_POST['email']);
+            $usuario->passwd = stripslashes($_POST['passwd']);
             $usuario = $this->db()->find($usuario,array('limit'=>1));
             //print_r($usuario);
             if($usuario){
@@ -20,7 +20,7 @@ class loginController extends DooController{
                 $usuario->update();
                 $result = array(
                             'usuario'=>$usuario->email,
-                            //'ultimoAcceso' => $usuario->ultimo_acceso,
+                            'tipoUsuario'=>$usuario->id_tipo_usuario,
                             'token'=>$usuario->token
                         );
             }else{

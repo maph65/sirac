@@ -1,0 +1,19 @@
+/*
+ * 
+ * hoja de estilo de ENGINETEC mobile apps
+ * Creada por Miguel alejandro Pérez Horta
+ * mperez@enginetec.com.mx
+ * 
+ */
+
+h1{
+	font-size: 26px;
+}
+
+.iconfooter{
+	height: 16px;
+}
+
+.text-center{
+	text-align: center;
+}
