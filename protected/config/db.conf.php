@@ -1,29 +1,74 @@
 <?php
-/**
- * Example Database connection settings and DB relationship mapping
- * $dbmap[Table A]['has_one'][Table B] = array('foreign_key'=> Table B's column that links to Table A );
- * $dbmap[Table B]['belongs_to'][Table A] = array('foreign_key'=> Table A's column where Table B links to );
- 
+//Mapeo de la base de datos al modelo ORM
+//$dbmap[][][] = array('foreign_key'=>'','through'=>'');
 
-//Food relationship
-$dbmap['Food']['belongs_to']['FoodType'] = array('foreign_key'=>'id');
-$dbmap['Food']['has_many']['Article'] = array('foreign_key'=>'food_id');
-$dbmap['Food']['has_one']['Recipe'] = array('foreign_key'=>'food_id');
-$dbmap['Food']['has_many']['Ingredient'] = array('foreign_key'=>'food_id', 'through'=>'food_has_ingredient');
+//Tabla ctCiclo
+$dbmap['ctCiclo']['has_many']['htPlanTrabajo'] = array('foreign_key'=>'id_ciclo');
 
-//Food Type
-$dbmap['FoodType']['has_many']['Food'] = array('foreign_key'=>'food_type_id');
+//Tabla ctCorreoUsuario
+$dbmap['ctCorreoUsuario']['belongs_to']['ctUsuario'] = array('foreign_key'=>'id_usuario');
 
-//Article
-$dbmap['Article']['belongs_to']['Food'] = array('foreign_key'=>'id');
+//Tabla ctDiaSemana
+$dbmap['ctDiaSemana']['has_many']['ctPlanTrabajo'] = array('foreign_key'=>'id_dia');
 
-//Recipe
-$dbmap['Recipe']['belongs_to']['Food'] = array('foreign_key'=>'id');
+//Tabla ctEspecialidad
+$dbmap['ctEspecialidad']['has_many']['rlMedicoEspecialidad'] = array('foreign_key'=>'id_especialidad');
 
-//Ingredient
-$dbmap['Ingredient']['has_many']['Food'] = array('foreign_key'=>'ingredient_id', 'through'=>'food_has_ingredient');
+//Tabla ctMedico
+$dbmap['ctMedico']['has_many']['ctPlanTrabajo'] = array('foreign_key'=>'id_medico');
+$dbmap['ctMedico']['has_many']['htPlanTrabajo'] = array('foreign_key'=>'id_medico');
+$dbmap['ctMedico']['has_many']['rlMedicoEspecialidad'] = array('foreign_key'=>'id_medico');
+$dbmap['ctMedico']['has_many']['rlMedicoSitio'] = array('foreign_key'=>'id_medico');
 
-*/
+//Tabla ctPlanTrabajo
+$dbmap['ctPlanTrabajo']['belongs_to']['ctUsuario'] = array('foreign_key'=>'id_usuario');
+$dbmap['ctPlanTrabajo']['belongs_to']['ctMedico'] = array('foreign_key'=>'id_medico');
+$dbmap['ctPlanTrabajo']['belongs_to']['ctSitio'] = array('foreign_key'=>'id_sitio');
+$dbmap['ctPlanTrabajo']['belongs_to']['ctDia'] = array('foreign_key'=>'id_dia');
+
+//Tabla ctSitio
+$dbmap['ctSitio']['has_many']['ctPlanTrabajo'] = array('foreign_key'=>'id_sitio');
+$dbmap['ctSitio']['has_many']['htPlanTrabajo'] = array('foreign_key'=>'id_sitio');
+$dbmap['ctSitio']['has_many']['rlMedicoSitio'] = array('foreign_key'=>'id_sitio');
+
+//Tabla ctPotencial
+$dbmap['ctPotencial']['has_many']['htReportePlanTrabajo'] = array('foreign_key'=>'id_potencial');
+
+//Tabla ctPrescriptor
+$dbmap['ctPrescriptor']['has_many']['htReportePlanTrabajo'] = array('foreign_key'=>'prescriptor');
+
+//Tabla ctTipoUsuario
+$dbmap['ctTipoUsuario']['has_many']['ctUsuario'] = array('foreign_key'=>'id_tipo_usuario');
+
+//Tabla ctUsuario
+$dbmap['ctUsuario']['has_many']['ctCorreoUsuario'] = array('foreign_key'=>'id_usuario');
+$dbmap['ctUsuario']['has_many']['ctPlanTrabajo'] = array('foreign_key'=>'id_usuario');
+$dbmap['ctUsuario']['belongs_to']['ctTipoUsuario'] = array('foreign_key'=>'id_tipo_usuario');
+$dbmap['ctUsuario']['belongs_to']['ctUsuario'] = array('foreign_key'=>'id_gerente');
+$dbmap['ctUsuario']['has_many']['ctUsuario'] = array('foreign_key'=>'id_gerente');
+$dbmap['ctUsuario']['has_many']['htPlanTrabajo'] = array('foreign_key'=>'id_usuario');
+
+//Tabla htPlanTrabajo
+$dbmap['htPlanTrabajo']['belongs_to']['ctUsuario'] = array('foreign_key'=>'id_usuario');
+$dbmap['htPlanTrabajo']['belongs_to']['ctMedico'] = array('foreign_key'=>'id_medico');
+$dbmap['htPlanTrabajo']['belongs_to']['ctSitio'] = array('foreign_key'=>'id_sitio');
+$dbmap['htPlanTrabajo']['belongs_to']['ctCiclo'] = array('foreign_key'=>'id_ciclo');
+$dbmap['htPlanTrabajo']['has_one']['htReportePlanTrabajo'] = array('foreign_key'=>'id_ht_plan_trabajo');
+
+//Tabla htReportePlanTrabajo
+$dbmap['htReportePlanTrabajo']['belongs_to']['htPlanTrabajo'] = array('foreign_key'=>'id_ht_plan_trabajo');
+$dbmap['htReportePlanTrabajo']['belongs_to']['ctPotencial'] = array('foreign_key'=>'id_potencial');
+$dbmap['htReportePlanTrabajo']['belongs_to']['ctPrescriptor'] = array('foreign_key'=>'prescriptor');
+
+//Tabla rlMedicoEspecialidad
+$dbmap['rlMedicoEspecialidad']['belongs_to']['ctMedico'] = array('foreign_key'=>'id_medico');
+$dbmap['rlMedicoEspecialidad']['belongs_to']['ctEspecialidad'] = array('foreign_key'=>'id_especialidad');
+
+//Tabla rlMedicoSitio
+$dbmap['rlMedicoSitio']['belongs_to']['ctMedico'] = array('foreign_key'=>'id_medico');
+$dbmap['rlMedicoSitio']['belongs_to']['ctSitio'] = array('foreign_key'=>'id_sitio');
+
+
 
 //$dbconfig[ Environment or connection name] = array(Host, Database, User, Password, DB Driver, Make Persistent Connection?);
 /**
