@@ -2,6 +2,7 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
+DROP SCHEMA IF EXISTS `sirac` ;
 CREATE SCHEMA IF NOT EXISTS `sirac` DEFAULT CHARACTER SET latin1 COLLATE latin1_spanish_ci ;
 USE `sirac` ;
 
@@ -265,6 +266,7 @@ CREATE  TABLE IF NOT EXISTS `sirac`.`ht_plan_trabajo` (
   `id_sitio` INT UNSIGNED NOT NULL ,
   `id_ciclo` VARCHAR(10) NOT NULL ,
   `fecha_visita` DATETIME NOT NULL ,
+  `activo` TINYINT NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`id_ht_plan_trabajo`) ,
   INDEX `rl_ht_plan_usuario_idx` (`id_usuario` ASC) ,
   INDEX `rl_ht_plan_medico_idx` (`id_medico` ASC) ,

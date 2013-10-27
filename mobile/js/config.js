@@ -12,6 +12,10 @@ function setUsuario(usr){
     window.localStorage.setItem("usuario",usr);
 }
 
+function getUsuario(){
+    return window.localStorage.getItem("usuario");
+}
+
 function getToken(){
     return window.localStorage.getItem("usuario");
 }

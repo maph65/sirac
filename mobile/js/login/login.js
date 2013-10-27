@@ -22,14 +22,18 @@ function inciarSesion() {
                 //alert(data);
                 setUsuario(result.usuario);
                 setTipoUsuario(result.tipoUsuario);
-                if (getTipoUsuario === 1) {
-                    $.mobile.changePage('representante.html', {
-                        transition: 'slide'
-                    });
+                if (getTipoUsuario() === "1") {
+                    window.location = "representante.html";
+                    /*$.mobile.changePage('representante.html', {
+                        transition: 'slide',
+                        reloadPage: true
+                    });*/
                 } else {
-                    $.mobile.changePage('gerente.html', {
-                        transition: 'slide'
-                    });
+                    window.location = "gerente.html";
+                    /*$.mobile.changePage('gerente.html', {
+                        transition: 'slide',
+                        reloadPage: true
+                    });*/
                 }
                 setToken(result.token);
             } else {
@@ -54,3 +58,10 @@ function clearField(object) {
     object.value = "@cellpharma.com";
     object.setSelectionRange(0, 0);
 }
+
+function validaUsuario(){
+    if (getUsuario() === null || getTipoUsuario() === null || getToken() === null) {
+        window.location.href = 'index.html';
+    }
+}
+
