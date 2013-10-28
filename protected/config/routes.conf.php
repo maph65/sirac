@@ -24,6 +24,7 @@ $route['post']['/API/login'] = array('loginController', 'login');
 $route['*']['/API/representante/getPlanTrabajo/:usuario/:token'] = array('planTrabajoController', 'obtenerPlanTrabajo');
 $route['*']['/API/representante/planActivo/:usuario/:token'] = array('planTrabajoController', 'planTrabajoActivo');
 $route['*']['/API/representante/ActivaPlan/:usuario/:token'] = array('planTrabajoController', 'activaPlanTrabajo');
-$route['*']['/API/representante/detallesMedicoSitio/:usuario/:token/:medico/:sitio'] = array('planTrabajoController', 'getDetallesMedicoSitio');
-
+$route['*']['/API/representante/detallesMedicoSitio/:usuario/:token/:medico/:sitio/:idHtPlanTrabajo'] = array('planTrabajoController', 'getDetallesMedicoSitio');
+$route['*']['/API/representante/fijarHoraVisita/:usuario/:token/:idHtPlanTrabajo/:horas/:minutos'] = array('planTrabajoController', 'setHoraMinutosPlanTrabajo');
+$route['*']['/API/representante/getDoctoresReporte/:usuario/:token'] = array('reportesController', 'getDoctoresReporte');
 ?>

@@ -130,14 +130,16 @@ class planTrabajoController extends DooController {
             $planTrabajo->fecha_visita = date("Y-m-d");
             //Verificamos si hay horas sin asignar
             $planTrabajo->hora_visita = "00:00:00";
+            $planTrabajo->id_usuario = $usuario;
             $arrayPlanTrabajo = $this->db()->find($planTrabajo);
-            if ($arrayPlanTrabajo) {
+            if (!empty($arrayPlanTrabajo)) {
                 //Hay horas sin asignar
                 $result['activado'] = FALSE;
             } else {
                 //No hay horas sin asignar, volvemos a consultar que si haya elementos
                 $planTrabajo = new htPlanTrabajo();
                 $planTrabajo->fecha_visita = date("Y-m-d");
+                $planTrabajo->id_usuario = $usuario;
                 $arrayPlanTrabajo = $this->db()->find($planTrabajo);
                 if ($arrayPlanTrabajo) {
                     foreach ($arrayPlanTrabajo as $pTrabajo) {
@@ -158,11 +160,13 @@ class planTrabajoController extends DooController {
     public function getDetallesMedicoSitio() {
         Doo::loadModel('ctMedico');
         Doo::loadModel('ctSitio');
+        Doo::loadModel('htPlanTrabajo');
         Doo::loadClass('validaLogin');
         $token = $this->params['token'];
         $usuario = $this->params['usuario'];
         $idMedico = $this->params['medico'];
         $idSitio = $this->params['sitio'];
+        $idHtPlanTrabajo = $this->params['idHtPlanTrabajo'];
         $result = array();
         if (validaLogin::validaToken($token, $usuario)) {
             $result = array('acceso' => 'correcto');
@@ -202,7 +206,47 @@ class planTrabajoController extends DooController {
             } else {
                 $result['error'] = "Sitio no encontrado.";
             }
+            $htPlan = new htPlanTrabajo();
+            $htPlan->id_ht_plan_trabajo = $idHtPlanTrabajo;
+            $htPlan = $this->db()->find($htPlan, array('limit' => 1));
+            if ($htPlan) {
+                //echo $htPlan->hora_visita;
+                $horas = preg_split('/:/', $htPlan->hora_visita);
+                $datosHtPlan = array(
+                    'hora' => $horas[0],
+                    'minutos' => $horas[1]
+                );
+                $result['horaVisita'] = $datosHtPlan;
+            }
         } else {
+            $result = array('acceso' => 'denegado');
+        }
+        echo json_encode($result);
+    }
+
+    public function setHoraMinutosPlanTrabajo() {
+        Doo::loadModel('htPlanTrabajo');
+        Doo::loadClass('validaLogin');
+        $token = $this->params['token'];
+        $usuario = $this->params['usuario'];
+        $idPlanTrabajo = $this->params['idHtPlanTrabajo'];
+        $horas = $this->params['horas'];
+        $minutos = $this->params['minutos'];
+        $result = array();
+        if (validaLogin::validaToken($token, $usuario)) {
+            $result = array('acceso' => 'correcto');
+            $htPlanTrabajo = new htPlanTrabajo();
+            $htPlanTrabajo->id_ht_plan_trabajo = $idPlanTrabajo;
+            $htPlanTrabajo->activo = 0;
+            $htPlanTrabajo = $this->db()->find($htPlanTrabajo,array('limit'=>1));
+            if($htPlanTrabajo){
+                $htPlanTrabajo->hora_visita = $horas.':'.$minutos.':00';
+                $htPlanTrabajo->update();
+                $result['actualizado'] = 'ok';
+            }else{
+                $result['actualizado'] = 'No se puede actualizar la hora. Este plan de trabajo ya esta activo.';
+            }
+        }else{
             $result = array('acceso' => 'denegado');
         }
         echo json_encode($result);
