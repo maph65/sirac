@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Define your URI routes here.
  *
@@ -13,7 +14,6 @@
  * Use lowercase for Request Method
  *
  */
- 
 $route['*']['/'] = array('MainController', 'index');
 $route['*']['/error'] = array('ErrorController', 'index');
 
@@ -21,6 +21,8 @@ $route['*']['/error'] = array('ErrorController', 'index');
 $route['post']['/API/login'] = array('loginController', 'login');
 
 //Representante
-$route['*']['/API/representante/getPlanTrabajo/:usuario/:token'] = array('planTrabajoController','obtenerPlanTrabajo');
+$route['*']['/API/representante/getPlanTrabajo/:usuario/:token'] = array('planTrabajoController', 'obtenerPlanTrabajo');
+$route['*']['/API/representante/planActivo/:usuario/:token'] = array('planTrabajoController', 'planTrabajoActivo');
+$route['*']['/API/representante/ActivaPlan/:usuario/:token'] = array('planTrabajoController', 'activaPlanTrabajo');
 
 ?>

@@ -16,13 +16,26 @@ class planTrabajoController extends DooController {
             $cantidadVisitar = sizeof($arrayPlanTrabajo);
             if($cantidadVisitar>0){
                 $result['numeroVisitas'] = $cantidadVisitar;
+                $arrayVisitas = array();
                 foreach ($arrayPlanTrabajo as $visita){
-                    print_r($visita);
+                    $v = array(
+                        'idHtPlanTrabajo' => $visita->id_ht_plan_trabajo,
+                        'idMedico' => $visita->id_medico,
+                        'NombreMedico' => $visita->ctMedico->nombre.' '.$visita->ctMedico->apaterno.' '.$visita->ctMedico->amaterno,
+                        'fechaVisita' => $visita->fecha_visita,
+                        'horaVisita' => $visita->hora_visita,
+                        'activo' => $visita->activo
+                    );
+                    array_push($arrayVisitas, $v);
+                    /*echo '<pre>';
+                    print_r($v);
+                    echo '</pre>';*/
                 }
+                $result['visitas'] = $arrayVisitas;
             }else{
                 //No hay datos en el plan de trabajo para hoy, se trata de obtener los datos del ctPlanTrabajo
                 if($this->construirPlanTrabajoDia($usuario)){
-                    obtenerPlanTrabajo();
+                    $this->obtenerPlanTrabajo();
                     exit;
                 }else{
                     $result['numeroVisitas'] = 0;
@@ -77,6 +90,55 @@ class planTrabajoController extends DooController {
             exit;
         }
         return false;
+    }
+    
+    public function planTrabajoActivo(){
+        Doo::loadModel('htPlanTrabajo');
+        Doo::loadClass('validaLogin');
+        $token = $this->params['token'];
+        $usuario = $this->params['usuario'];
+        $result = array();
+        if (validaLogin::validaToken($token, $usuario)) {
+            $result = array('acceso' => 'correcto');
+            $planTrabajo = new htPlanTrabajo();
+            $planTrabajo->fecha_visita = date("Y-m-d");
+            $planTrabajo->activo = 1;
+            $planTrabajo = $this->db()->find($planTrabajo,array('limit'=>1));
+            if($planTrabajo){
+                //Se encontraron planes de trabajo activo
+                $result['planActivo'] = TRUE;
+            }else{
+                //No se encontraron planes de trabajo activo o no hay planes de trabajo
+                $result['planActivo'] = FALSE;
+            }
+        }else{
+            $result = array('acceso' => 'denegado');
+        }
+        echo json_encode($result);
+    }
+    
+    public function activaPlanTrabajo(){
+        Doo::loadModel('htPlanTrabajo');
+        Doo::loadClass('validaLogin');
+        $token = $this->params['token'];
+        $usuario = $this->params['usuario'];
+        $result = array();
+        if (validaLogin::validaToken($token, $usuario)) {
+            $result = array('acceso' => 'correcto');
+            $planTrabajo = new htPlanTrabajo();
+            $planTrabajo->fecha_visita = date("Y-m-d");
+            $arrayPlanTrabajo = $this->db()->find($planTrabajo);
+            if($arrayPlanTrabajo){
+                foreach($arrayPlanTrabajo as $pTrabajo){
+                    $pTrabajo->activo = 1;
+                    $pTrabajo->update();
+                }
+            }
+            $result['activado'] = TRUE;
+        }else{
+            $result = array('acceso' => 'denegado');
+        }
+        echo json_encode($result);
     }
 
 }
