@@ -24,5 +24,6 @@ $route['post']['/API/login'] = array('loginController', 'login');
 $route['*']['/API/representante/getPlanTrabajo/:usuario/:token'] = array('planTrabajoController', 'obtenerPlanTrabajo');
 $route['*']['/API/representante/planActivo/:usuario/:token'] = array('planTrabajoController', 'planTrabajoActivo');
 $route['*']['/API/representante/ActivaPlan/:usuario/:token'] = array('planTrabajoController', 'activaPlanTrabajo');
+$route['*']['/API/representante/detallesMedicoSitio/:usuario/:token/:medico/:sitio'] = array('planTrabajoController', 'getDetallesMedicoSitio');
 
 ?>

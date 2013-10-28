@@ -16,10 +16,6 @@ function getUsuario(){
     return window.localStorage.getItem("usuario");
 }
 
-function getToken(){
-    return window.localStorage.getItem("usuario");
-}
-
 function setTipoUsuario(tipo){
     window.localStorage.setItem("tipoUsuario",tipo);
 }

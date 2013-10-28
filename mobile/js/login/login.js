@@ -25,15 +25,15 @@ function inciarSesion() {
                 if (getTipoUsuario() === "1") {
                     window.location = "representante.html";
                     /*$.mobile.changePage('representante.html', {
-                        transition: 'slide',
-                        reloadPage: true
-                    });*/
+                     transition: 'slide',
+                     reloadPage: true
+                     });*/
                 } else {
                     window.location = "gerente.html";
                     /*$.mobile.changePage('gerente.html', {
-                        transition: 'slide',
-                        reloadPage: true
-                    });*/
+                     transition: 'slide',
+                     reloadPage: true
+                     });*/
                 }
                 setToken(result.token);
             } else {
@@ -59,7 +59,7 @@ function clearField(object) {
     object.setSelectionRange(0, 0);
 }
 
-function validaUsuario(){
+function validaUsuario() {
     if (getUsuario() === null || getTipoUsuario() === null || getToken() === null) {
         window.location.href = 'index.html';
     }

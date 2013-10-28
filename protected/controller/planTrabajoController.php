@@ -11,33 +11,34 @@ class planTrabajoController extends DooController {
         if (validaLogin::validaToken($token, $usuario)) {
             $result = array('acceso' => 'correcto');
             $planTrabajo = new htPlanTrabajo();
-            $planTrabajo->fecha_visita(date("Y-m-d"));
-            $arrayPlanTrabajo = $this->db()->relateMany($planTrabajo,array('ctMedico','ctSitio','ctCiclo'));//->find($planTrabajo);
+            $planTrabajo->fecha_visita = date("Y-m-d");
+            $arrayPlanTrabajo = $this->db()->relate($planTrabajo, 'ctMedico'); //->find($planTrabajo);
             $cantidadVisitar = sizeof($arrayPlanTrabajo);
-            if($cantidadVisitar>0){
+            if ($cantidadVisitar > 0) {
                 $result['numeroVisitas'] = $cantidadVisitar;
                 $arrayVisitas = array();
-                foreach ($arrayPlanTrabajo as $visita){
+                foreach ($arrayPlanTrabajo as $visita) {
                     $v = array(
                         'idHtPlanTrabajo' => $visita->id_ht_plan_trabajo,
                         'idMedico' => $visita->id_medico,
-                        'NombreMedico' => $visita->ctMedico->nombre.' '.$visita->ctMedico->apaterno.' '.$visita->ctMedico->amaterno,
+                        'NombreMedico' => $visita->ctMedico->nombre . ' ' . $visita->ctMedico->apaterno . ' ' . $visita->ctMedico->amaterno,
+                        'idSitio' => $visita->id_sitio,
                         'fechaVisita' => $visita->fecha_visita,
                         'horaVisita' => $visita->hora_visita,
                         'activo' => $visita->activo
                     );
                     array_push($arrayVisitas, $v);
-                    /*echo '<pre>';
-                    print_r($v);
-                    echo '</pre>';*/
+                    /* echo '<pre>';
+                      print_r($v);
+                      echo '</pre>'; */
                 }
                 $result['visitas'] = $arrayVisitas;
-            }else{
+            } else {
                 //No hay datos en el plan de trabajo para hoy, se trata de obtener los datos del ctPlanTrabajo
-                if($this->construirPlanTrabajoDia($usuario)){
+                if ($this->construirPlanTrabajoDia($usuario)) {
                     $this->obtenerPlanTrabajo();
                     exit;
-                }else{
+                } else {
                     $result['numeroVisitas'] = 0;
                 }
             }
@@ -47,24 +48,24 @@ class planTrabajoController extends DooController {
         //Imprimimos la respuesta como objeto json
         echo json_encode($result);
     }
-    
-    private function construirPlanTrabajoDia($usuario){
+
+    private function construirPlanTrabajoDia($usuario) {
         Doo::loadModel('htPlanTrabajo');
         Doo::loadModel('ctPlanTrabajo');
         Doo::loadModel('ctCiclo');
         Doo::loadClass('diaSemanaCiclo');
         //$ciclo = new ctCiclo();
-        $ciclo = $this->db()->find(new ctCiclo(),array('where'=>'fecha_inicio<="'.date("Y-m-d").'" AND fecha_termino>="'.date("Y-m-d").'"', 'limit'=>1));
-        if($ciclo){
+        $ciclo = $this->db()->find(new ctCiclo(), array('where' => 'fecha_inicio<="' . date("Y-m-d") . '" AND fecha_termino>="' . date("Y-m-d") . '"', 'limit' => 1));
+        if ($ciclo) {
             $diaSemana = diaSemanaCiclo::obtenDiaSemanaCiclo($ciclo->fecha_inicio);
             $planTrabajo = new ctPlanTrabajo();
             //Hay que descomentar esto, pues se esta fijando a un día específico
-            $planTrabajo->semana = 3; //$diaSemana['NumSemana'];
-            $planTrabajo->id_dia = 1; //$diaSemana['NumDia'];
+            $planTrabajo->semana = $diaSemana['NumSemana'];
+            $planTrabajo->id_dia = $diaSemana['NumDia'];
             $planTrabajo->id_usuario = $usuario;
             $arrayPlanTrabajo = $this->db()->find($planTrabajo);
-            if(!empty($arrayPlanTrabajo)){
-                foreach ($arrayPlanTrabajo as $medicoVisita){
+            if (!empty($arrayPlanTrabajo)) {
+                foreach ($arrayPlanTrabajo as $medicoVisita) {
                     $htPlan = new htPlanTrabajo();
                     $htPlan->id_usuario = $usuario;
                     $htPlan->fecha_visita = date("Y-m-d");
@@ -79,20 +80,20 @@ class planTrabajoController extends DooController {
                 //Se ha actualizado exitosamente, podemos volver al flujo inicial
                 return true;
                 exit;
-            }else{
+            } else {
                 //No ha registros que insertar, no insertamos nada
                 return false;
             }
-        }else{
-            $result = array('acceso' => 'correcto','error'=>'Ciclo no encontrado para la fecha actual.');
+        } else {
+            $result = array('acceso' => 'correcto', 'error' => 'Ciclo no encontrado para la fecha actual.');
             echo json_encode($result);
             return false;
             exit;
         }
         return false;
     }
-    
-    public function planTrabajoActivo(){
+
+    public function planTrabajoActivo() {
         Doo::loadModel('htPlanTrabajo');
         Doo::loadClass('validaLogin');
         $token = $this->params['token'];
@@ -103,21 +104,21 @@ class planTrabajoController extends DooController {
             $planTrabajo = new htPlanTrabajo();
             $planTrabajo->fecha_visita = date("Y-m-d");
             $planTrabajo->activo = 1;
-            $planTrabajo = $this->db()->find($planTrabajo,array('limit'=>1));
-            if($planTrabajo){
+            $planTrabajo = $this->db()->find($planTrabajo, array('limit' => 1));
+            if ($planTrabajo) {
                 //Se encontraron planes de trabajo activo
                 $result['planActivo'] = TRUE;
-            }else{
+            } else {
                 //No se encontraron planes de trabajo activo o no hay planes de trabajo
                 $result['planActivo'] = FALSE;
             }
-        }else{
+        } else {
             $result = array('acceso' => 'denegado');
         }
         echo json_encode($result);
     }
-    
-    public function activaPlanTrabajo(){
+
+    public function activaPlanTrabajo() {
         Doo::loadModel('htPlanTrabajo');
         Doo::loadClass('validaLogin');
         $token = $this->params['token'];
@@ -127,15 +128,81 @@ class planTrabajoController extends DooController {
             $result = array('acceso' => 'correcto');
             $planTrabajo = new htPlanTrabajo();
             $planTrabajo->fecha_visita = date("Y-m-d");
+            //Verificamos si hay horas sin asignar
+            $planTrabajo->hora_visita = "00:00:00";
             $arrayPlanTrabajo = $this->db()->find($planTrabajo);
-            if($arrayPlanTrabajo){
-                foreach($arrayPlanTrabajo as $pTrabajo){
-                    $pTrabajo->activo = 1;
-                    $pTrabajo->update();
+            if ($arrayPlanTrabajo) {
+                //Hay horas sin asignar
+                $result['activado'] = FALSE;
+            } else {
+                //No hay horas sin asignar, volvemos a consultar que si haya elementos
+                $planTrabajo = new htPlanTrabajo();
+                $planTrabajo->fecha_visita = date("Y-m-d");
+                $arrayPlanTrabajo = $this->db()->find($planTrabajo);
+                if ($arrayPlanTrabajo) {
+                    foreach ($arrayPlanTrabajo as $pTrabajo) {
+                        $pTrabajo->activo = 1;
+                        $pTrabajo->update();
+                    }
+                    $result['activado'] = TRUE;
+                } else {
+                    $result['activado'] = FALSE;
                 }
             }
-            $result['activado'] = TRUE;
-        }else{
+        } else {
+            $result = array('acceso' => 'denegado');
+        }
+        echo json_encode($result);
+    }
+
+    public function getDetallesMedicoSitio() {
+        Doo::loadModel('ctMedico');
+        Doo::loadModel('ctSitio');
+        Doo::loadClass('validaLogin');
+        $token = $this->params['token'];
+        $usuario = $this->params['usuario'];
+        $idMedico = $this->params['medico'];
+        $idSitio = $this->params['sitio'];
+        $result = array();
+        if (validaLogin::validaToken($token, $usuario)) {
+            $result = array('acceso' => 'correcto');
+            $medico = new ctMedico();
+            $medico->id_medico = $idMedico;
+            $medico = $this->db()->find($medico, array('limit' => 1));
+            if ($medico) {
+                $datosMedico = array(
+                    'idMedico' => $medico->id_medico,
+                    'nombre' => $medico->nombre . ' ' . $medico->apaterno . ' ' . $medico->amaterno,
+                    'cedula' => $medico->cedula,
+                    'celular' => $medico->celular,
+                    'fechaNac' => $medico->fecha_nac,
+                    'universidad' => $medico->universidad
+                );
+                $result['medico'] = $datosMedico;
+            } else {
+                $result['error'] = "Medico no encontrado.";
+            }
+
+            $sitio = new ctSitio();
+            $sitio->id_sitio = $idSitio;
+            $sitio = $this->db()->find($sitio, array('limit' => 1));
+            if ($sitio) {
+                $datosSitio = array(
+                    'idSitio' => $sitio->id_sitio,
+                    'nombre' => $sitio->nombre,
+                    'calle' => $sitio->calle,
+                    'numExt' => $sitio->num_exterior,
+                    'numInt' => $sitio->num_interior,
+                    'colonia' => $sitio->colonia,
+                    'delegacion' => $sitio->delegacion,
+                    'cp' => $sitio->cp,
+                    'telefono' => $sitio->telefono
+                );
+                $result['sitio'] = $datosSitio;
+            } else {
+                $result['error'] = "Sitio no encontrado.";
+            }
+        } else {
             $result = array('acceso' => 'denegado');
         }
         echo json_encode($result);
