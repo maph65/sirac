@@ -260,7 +260,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sirac`.`ht_plan_trabajo` ;
 
 CREATE  TABLE IF NOT EXISTS `sirac`.`ht_plan_trabajo` (
-  `id_ht_plan_trabajo` INT UNSIGNED NOT NULL ,
+  `id_ht_plan_trabajo` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `id_usuario` VARCHAR(30) NOT NULL ,
   `id_medico` INT UNSIGNED NOT NULL ,
   `id_sitio` INT UNSIGNED NOT NULL ,
