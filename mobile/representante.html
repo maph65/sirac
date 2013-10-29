@@ -58,19 +58,21 @@
     <!--Plan de trabajo-->
     <div data-role="page" id="plan" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="#" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#home" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Plan de trabajo</h1>
         </div>
         <div data-role="content">
             <ul data-role="listview" data-theme="d" data-inset="true" id="listaDoctoresPlanTrabajo"> 
             </ul>
             <ul data-role="listview" data-theme="d" data-inset="true" id="activaPlan"> 
+                <li><a href="#listaMedicoAgrega">Agregar m&eacute;dico</a></li>
                 <li><a href="#activaPlan">Activar plan</a></li>
             </ul>
         </div>
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -81,7 +83,7 @@
     <!--Activar plan-->
     <div data-role="page" id="activaPlan" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="#" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#plan" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Plan de trabajo</h1>
         </div>
         <div data-role="content">
@@ -95,6 +97,7 @@
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -105,7 +108,7 @@
     <!--Detalles del plan de trabajo-->
     <div data-role="page" id="detallesPlanTrabajo" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="#" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#plan" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Detalles</h1>
         </div>
         <div data-role="content">
@@ -196,7 +199,8 @@
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
-                    <li><a href="#" onclick="history.back()"><img src="media/back.png"><br />Regresar</a></li>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
+                    <li><a href="#plan" data-transition="slide"><img src="media/back.png"><br />Regresar</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -220,6 +224,7 @@
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -230,7 +235,7 @@
     <!--Ficha crear reporte-->
     <div data-role="page" id="fichaCrearReporte" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="#" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#reporte" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Crear reportes</h1>
         </div>
         <div data-role="content">
@@ -308,6 +313,7 @@
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -318,7 +324,7 @@
     <!--ficha doctores-->
     <div data-role="page" id="doctores" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="#" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#home" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Doctores</h1>
         </div>
         <div data-role="content">
@@ -328,6 +334,7 @@
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -339,7 +346,7 @@
     <!--Pedidos-->
     <div data-role="page" id="pedidos" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="#" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#home" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Pedidos</h1>
         </div>
         <div data-role="content">
@@ -348,6 +355,7 @@
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -358,7 +366,7 @@
     <!--Mensajes-->
     <div data-role="page" id="mensajes" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#home" data-transitio="slide" data-theme="a">Regresar</a>
             <h1>Mensajes</h1>
         </div>
         <div data-role="content" style="text-align: center;">
@@ -367,6 +375,7 @@
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
