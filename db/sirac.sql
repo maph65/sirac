@@ -326,6 +326,88 @@ CREATE  TABLE IF NOT EXISTS `sirac`.`ht_reporte_plan_trabajo` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `sirac`.`rl_medico_representante`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sirac`.`rl_medico_representante` ;
+
+CREATE  TABLE IF NOT EXISTS `sirac`.`rl_medico_representante` (
+  `id_medico` INT UNSIGNED NOT NULL ,
+  `usuario` VARCHAR(30) NOT NULL ,
+  PRIMARY KEY (`id_medico`, `usuario`) ,
+  INDEX `fk_ct_medico_has_ct_usuario_ct_usuario1_idx` (`usuario` ASC) ,
+  INDEX `fk_ct_medico_has_ct_usuario_ct_medico1_idx` (`id_medico` ASC) ,
+  CONSTRAINT `fk_ct_medico_has_ct_usuario_ct_medico1`
+    FOREIGN KEY (`id_medico` )
+    REFERENCES `sirac`.`ct_medico` (`id_medico` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ct_medico_has_ct_usuario_ct_usuario1`
+    FOREIGN KEY (`usuario` )
+    REFERENCES `sirac`.`ct_usuario` (`usuario` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sirac`.`ct_medicina`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sirac`.`ct_medicina` ;
+
+CREATE  TABLE IF NOT EXISTS `sirac`.`ct_medicina` (
+  `id_medicina` INT NOT NULL ,
+  `nombre` VARCHAR(45) NULL ,
+  `descripcion` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id_medicina`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sirac`.`ct_presentacion`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sirac`.`ct_presentacion` ;
+
+CREATE  TABLE IF NOT EXISTS `sirac`.`ct_presentacion` (
+  `id_presentacion` INT NOT NULL ,
+  `id_medicina` INT NOT NULL ,
+  `tipo_presentacion` VARCHAR(45) NULL ,
+  `dosis` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id_presentacion`) ,
+  INDEX `fk_ct_presentacion_ct_medicina1_idx` (`id_medicina` ASC) ,
+  CONSTRAINT `fk_ct_presentacion_ct_medicina1`
+    FOREIGN KEY (`id_medicina` )
+    REFERENCES `sirac`.`ct_medicina` (`id_medicina` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sirac`.`ct_presentacion_has_ct_usuario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sirac`.`ct_presentacion_has_ct_usuario` ;
+
+CREATE  TABLE IF NOT EXISTS `sirac`.`ct_presentacion_has_ct_usuario` (
+  `id_presentacion` INT NOT NULL ,
+  `representante` VARCHAR(30) NOT NULL ,
+  `fecha` TIMESTAMP NOT NULL ,
+  PRIMARY KEY (`id_presentacion`, `representante`, `fecha`) ,
+  INDEX `fk_ct_presentacion_has_ct_usuario_ct_usuario1_idx` (`representante` ASC) ,
+  INDEX `fk_ct_presentacion_has_ct_usuario_ct_presentacion1_idx` (`id_presentacion` ASC) ,
+  CONSTRAINT `fk_ct_presentacion_has_ct_usuario_ct_presentacion1`
+    FOREIGN KEY (`id_presentacion` )
+    REFERENCES `sirac`.`ct_presentacion` (`id_presentacion` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ct_presentacion_has_ct_usuario_ct_usuario1`
+    FOREIGN KEY (`representante` )
+    REFERENCES `sirac`.`ct_usuario` (`usuario` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 USE `sirac` ;
 
 
