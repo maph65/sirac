@@ -1,10 +1,5 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 class medicosController extends DooController {
 
     public function consultarMedicos() {
@@ -14,7 +9,7 @@ class medicosController extends DooController {
         foreach ($arrayMedicos as $medico) {
             $v = array(
                 'idMedico' => $medico->id_medico,
-                'NombreMedico' => $medico->nombre . ' ' . $medico->apaterno . ' ' . $medico->amaterno
+                'NombreMedico' => utf8_encode($medico->nombre . ' ' . $medico->apaterno . ' ' . $medico->amaterno)
             );
             array_push($arrayDespliegue, $v);
         }

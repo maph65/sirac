@@ -80,4 +80,9 @@ $dbmap['rlMedicoSitio']['belongs_to']['ctSitio'] = array('foreign_key'=>'id_siti
  $dbconfig['dev'] = array('localhost', 'sirac', 'root', 'cete8653', 'mysql', true);
  $dbconfig['prod'] = array('localhost', 'sirac', 'root', 'cete8653', 'mysql', true);
 
+//$dbconfig['dev'] = array('localhost', 'enginetec_com_mx_sirac', 'engin_sirac', 'cete8653', 'mysql', true);
+//$dbconfig['prod'] = array('localhost', 'enginetec_com_mx_sirac', 'engin_sirac', 'cete8653', 'mysql', true);
+ 
+ 
+
 ?>

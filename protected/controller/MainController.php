@@ -8,7 +8,7 @@
 class MainController extends DooController{
 
     public function index(){
-		echo 'index';
+		header('location:'.Doo::conf()->APP_URL.'mobile/');
     }
 }
 ?>

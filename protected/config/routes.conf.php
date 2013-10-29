@@ -27,9 +27,11 @@ $route['*']['/API/representante/ActivaPlan/:usuario/:token'] = array('planTrabaj
 $route['*']['/API/representante/detallesMedicoSitio/:usuario/:token/:medico/:sitio/:idHtPlanTrabajo'] = array('planTrabajoController', 'getDetallesMedicoSitio');
 $route['*']['/API/representante/fijarHoraVisita/:usuario/:token/:idHtPlanTrabajo/:horas/:minutos'] = array('planTrabajoController', 'setHoraMinutosPlanTrabajo');
 $route['*']['/API/representante/getDoctoresReporte/:usuario/:token'] = array('reportesController', 'getDoctoresReporte');
+
+$route['*']['/API/representante/registrarReporte/:usuario/:token/:idhtreporte'] = array('reportesController', 'guardarReporte');
+
+//Ver medicos
+$route['*']['/API/medicos/verMedicos'] = array('medicosController', 'consultarMedicos');
+
 $route['*']['/API/representante/quitarMedico/:usuario/:idPlan'] = array('planTrabajoController', 'quitarMedico');
-
-//Medicos
-$route['*']['/API/medicos/verMedicos/'] = array('medicosController', 'consultarMedicos');
-
 ?>

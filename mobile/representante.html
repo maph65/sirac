@@ -58,19 +58,21 @@
     <!--Plan de trabajo-->
     <div data-role="page" id="plan" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="#" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#home" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Plan de trabajo</h1>
         </div>
         <div data-role="content">
             <ul data-role="listview" data-theme="d" data-inset="true" id="listaDoctoresPlanTrabajo"> 
             </ul>
             <ul data-role="listview" data-theme="d" data-inset="true" id="activaPlan"> 
+                <li><a href="#listaMedicoAgrega">Agregar m&eacute;dico</a></li>
                 <li><a href="#activaPlan">Activar plan</a></li>
             </ul>
         </div>
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -81,20 +83,21 @@
     <!--Activar plan-->
     <div data-role="page" id="activaPlan" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="#" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#plan" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Plan de trabajo</h1>
         </div>
         <div data-role="content">
             <p>&iquest;Desea activar el plan de trabajo? Una vez activado no podra realizar modificaciones</p>
             <ul data-role="listview" data-theme="d" data-inset="true" id="listaDoctoresPlanTrabajo"> 
             </ul>
-            
+
             <a href="#" data-transition="slide" data-role="button" onclick="activarPlanTrabajo()">Activar plan</a>
-            
+
         </div>
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -105,7 +108,7 @@
     <!--Detalles del plan de trabajo-->
     <div data-role="page" id="detallesPlanTrabajo" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="#" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#plan" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Detalles</h1>
         </div>
         <div data-role="content">
@@ -181,16 +184,23 @@
                 <option value="55">55 mins</option>
             </select>
             <a href="#" data-role="button" data-theme="a" data-inline="true" style="width: 99%;" onclick="guardarHoraVisita(htHoraPlanVisita)">Guardar hora de visita</a>
-            
+            <br />
+            <h2>Quitar m&eacute;dico</h2>
+            <a href="#" data-role="button" data-theme="a" data-inline="true" style="width: 99%;" onclick="quitarMedico(htHoraPlanVisita)">Quitar m&eacute;dico</a>
+
             <div data-role="popup" data-transition="fade" id="horaGuardadaPopup">
                 <p>Hora actualizada correctamente.<p>
+            </div>
+            <div data-role="popup" data-transition="fade" id="errorQuitarMedicoPopup">
+                <p>No es posible quitar este m&eacute;dico.<p>
             </div>
 
         </div>
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
-                    <li><a href="#" onclick="history.back()"><img src="media/back.png"><br />Regresar</a></li>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
+                    <li><a href="#plan" data-transition="slide"><img src="media/back.png"><br />Regresar</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -201,7 +211,7 @@
     <!--Reportes-->
     <div data-role="page" id="reporte" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="#" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#home" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Reportes</h1>
         </div>
         <div data-role="content">
@@ -209,11 +219,101 @@
             </div>
             <ul data-role="listview" data-theme="d" data-inset="true" id="listaDoctoresReporte">
             </ul>
-            
+
         </div>
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
+                    <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
+                    <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
+                </ul>
+            </div><!-- /navbar -->
+        </div><!-- /footer -->
+    </div>
+
+    <!--Ficha crear reporte-->
+    <div data-role="page" id="fichaCrearReporte" data-theme="a">
+        <div data-role="header" data-position="inline">
+            <a href="#reporte" data-transition="slide" data-theme="a">Regresar</a>
+            <h1>Crear reportes</h1>
+        </div>
+        <div data-role="content">
+            <h2>Detalles del M&eacute;dico</h2>
+            <div class="ui-grid-a ui-responsive">
+                <div class="ui-block-a"><div class="ui-body ui-body-d">Nombre</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="reporteMedicoNombre">&nbsp;</div></div>
+                <div class="ui-block-a"><div class="ui-body ui-body-d">Fecha de Nacimiento</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="reporteMedicoFechaNac">&nbsp;</div></div>
+                <div class="ui-block-a"><div class="ui-body ui-body-d">Cedula profesional</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="reporteMedicoCedula">&nbsp;</div></div>
+                <div class="ui-block-a"><div class="ui-body ui-body-d">Universidad</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="reporteMedicoUniversidad">&nbsp;</div></div>
+                <div class="ui-block-a"><div class="ui-body ui-body-d">Celular</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="reporteMedicoCelular">&nbsp;</div></div>
+            </div>
+            <br />
+            <h2>Detalles de la visita</h2>
+            <div class="ui-grid-a ui-responsive">
+                <div class="ui-block-a"><div class="ui-body ui-body-d">Nombre</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="reporteSitioNombre">&nbsp;</div></div>
+                <div class="ui-block-a"><div class="ui-body ui-body-d">Calle</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="reporteSitioCalle">&nbsp;</div></div>
+                <div class="ui-block-a"><div class="ui-body ui-body-d">Colonia</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="reporteSitioColonia">&nbsp;</div></div>
+                <div class="ui-block-a"><div class="ui-body ui-body-d">C&oacute;digo postal</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="reporteSitioCp">&nbsp;</div></div>
+                <div class="ui-block-a"><div class="ui-body ui-body-d">Delgaci&oacute;n o Municipio</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="reporteSitioDelegacion">&nbsp;</div></div>
+                <div class="ui-block-a"><div class="ui-body ui-body-d">Tel&eacute;fono</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="reporteSitioTelefono">&nbsp;</div></div>
+            </div>
+            <h2>Reporte de la visita</h2>
+            <div id="tablaReporte" style="text-align: center; width: 100%;">
+                <table>
+                    <tr>
+                        <td width="200">Cuenta con farmacia:</td>
+                        <td width="200">
+                            <div data-role="fieldcontain">
+                                <select name="farmaciaSlider" id="slider" data-role="slider" data-theme="b">
+                                    <option value="0">No</option>
+                                    <option value="1">Si</option>
+                                </select> 
+                            </div>
+                        </td>
+                        <td width="300">Prescriptor:</td>
+                        <td width="200">
+                            <div data-role="fieldcontain">
+                                <select id="prescriptor">
+                                    <option value="1">Muy alta</option>
+                                    <option value="2">Alta</option>
+                                    <option value="3">Media</option>
+                                    <option value="4">Baja</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td width="300">Potencial:</td>
+                        <td width="200">
+                            <div data-role="fieldcontain">
+                                <select id="potencial">
+                                    <option value="A">A</option>
+                                    <option value="AA">AA</option>
+                                    <option value="B">B</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div data-role="popup" data-transition="fade" id="reporteGuardado">
+                <p>Reporte guardado.<p>
+            </div>
+            <a href="#" data-role="button" data-theme="a" onClick="GuardarReporte(reporteHtPlanTrabajoID)">Guardar reporte</a>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -224,15 +324,17 @@
     <!--ficha doctores-->
     <div data-role="page" id="doctores" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="#" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#home" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Doctores</h1>
         </div>
         <div data-role="content">
-
+            <ul data-role="listview" id="listaDoctoresGeneral" data-theme="c"> 
+            </ul>
         </div>
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -244,7 +346,7 @@
     <!--Pedidos-->
     <div data-role="page" id="pedidos" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="#" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#home" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Pedidos</h1>
         </div>
         <div data-role="content">
@@ -253,6 +355,7 @@
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -263,15 +366,16 @@
     <!--Mensajes-->
     <div data-role="page" id="mensajes" data-theme="a">
         <div data-role="header" data-position="inline">
-            <a href="" data-rel="back" data-theme="a">Regresar</a>
+            <a href="#home" data-transitio="slide" data-theme="a">Regresar</a>
             <h1>Mensajes</h1>
         </div>
-        <div data-role="content">
-
+        <div data-role="content" style="text-align: center;">
+            <h1>No hay mensajes nuevos</h1>
         </div>
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#home" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
