@@ -1,4 +1,5 @@
 var htHoraPlanVisita = 0;
+var reporteHtPlanTrabajoID = 0;
 
 $(document).on('pageshow', '#home', function() {
     //verificamos el estado del plan de trabajo del dia de hoy
@@ -114,11 +115,35 @@ function guardarHoraVisita(idHtPlanTrabajo) {
                     $('#horaGuardadaPopup').popup();
                     $('#horaGuardadaPopup').popup('open');
                 } else {
-                    alert(result.actualizado);
+                   alert(result.error);
                 }
             });
     $.mobile.loading('hide');
 
+}
+
+function quitarMedico(idHtPlanTrabajo){
+    $.mobile.loading('show', {
+        text: 'Eliminando médico...',
+        textVisible: true,
+        theme: 'a',
+        html: ""
+    });
+    $.get(
+            servidor + "sirac/API/representante/quitarMedico/" + getUsuario() +  "/" + idHtPlanTrabajo ,
+            {},
+            function(data) {
+                result = jQuery.parseJSON(data);
+                if (result.operacion === "fallo") {
+                    $('#errorQuitarMedicoPopup').popup();
+                    $('#errorQuitarMedicoPopup').popup('open');
+                } else {
+                    $.mobile.changePage('#plan', {
+                        transition: 'slide'
+                    });
+                }
+            });
+    $.mobile.loading('hide');
 }
 
 function activarPlanTrabajo() {
@@ -163,13 +188,20 @@ $(document).on('pageshow', '#reporte', function() {
                                 servidor + "sirac/API/representante/getDoctoresReporte/" + getUsuario() + "/" + getToken(),
                                 {},
                                 function(data) {
+                                    $("#listaDoctoresReporte").html("");
                                     result2 = jQuery.parseJSON(data);
                                     if (result2.acceso === "correcto") {
                                         if (result2.medicos.length > 0) {
                                             for (var i = 0; i < result2.medicos.length; i++) {
                                                 var medico = result2.medicos[i];
                                                 //alert(medico.idMedico);
-                                                var text = '<li><a href="#" onclick="creaReporte(' + medico.idMedico + ',' + medico.htPlanTrabajo + ')" data-transition="slide">' + medico.nombreMedico + '  <span>('+ medico.reportado +')</span>' +'</a></li>';
+                                                var text;
+                                                if(medico.reportado==="Reportado"){
+                                                    text = '<li><a href="#" onclick="alert(\'Ya ha llenado el reporte de este Médico\')" data-transition="slide">' + medico.nombreMedico + ' <p class="ui-li-aside">'+ medico.reportado +'</p></a></li>';
+                                                }else{
+                                                    text = '<li><a href="#" onclick="creaReporte(' + medico.idMedico + ',' + medico.idSitio + ',' + medico.htPlanTrabajo + ')" data-transition="slide">' + medico.nombreMedico + ' <p class="ui-li-aside">'+ medico.reportado +'</p></a></li>';
+                                                }
+                                                
                                                 $("#listaDoctoresReporte").append(text).listview('refresh');//trigger('create');
                                             }
                                         } else {
@@ -187,4 +219,85 @@ $(document).on('pageshow', '#reporte', function() {
                     window.location = "index.html";
                 }
             });
+});
+
+function creaReporte(idMedico,idSitio,idHtPlan){
+    $.mobile.loading('show', {
+        text: 'Actualizando información...',
+        textVisible: true,
+        theme: 'a',
+        html: ""
+    });
+    //Cargamos los datos
+    $.get(
+            servidor + "sirac/API/representante/detallesMedicoSitio/" + getUsuario() + "/" + getToken() + "/" + idMedico + "/" + idSitio + "/" + idHtPlan,
+            {},
+            function(data) {
+                //alert(data);
+                reporteHtPlanTrabajoID = idHtPlan;
+                result = jQuery.parseJSON(data);
+                //colocamos datos nuevos
+                $("#reporteMedicoNombre").html(result.medico.nombre + "&nbsp;");
+                $("#reporteMedicoFechaNac").html(result.medico.fechaNac + "&nbsp;");
+                $("#reporteMedicoCedula").html(result.medico.cedula + "&nbsp;");
+                $("#reporteMedicoUniversidad").html(result.medico.universidad + "&nbsp;");
+                $("#reporteMedicoCelular").html(result.medico.celular + "&nbsp;");
+
+                $("#reporteSitioNombre").html(result.sitio.nombre + "&nbsp;");
+                $("#reporteSitioCalle").html(result.sitio.calle + " " + " No. " + result.sitio.numExt + " " + result.sitio.numInt + "&nbsp;");
+                $("#reporteSitioColonia").html(result.sitio.colonia + "&nbsp;");
+                $("#reporteSitioCp").html(result.sitio.cp + "&nbsp;");
+                $("#reporteSitioDelegacion").html(result.sitio.delegacion + "&nbsp;");
+                $("#reporteSitioTelefono").html(result.sitio.telefono + "&nbsp;");
+                //terminamos, hora de ir a la siguiente pagina para ver la informacion
+            });
+    $.mobile.changePage('#fichaCrearReporte', {
+        transition: 'slide'
+    });
+    $.mobile.loading('hide');
+}
+
+
+function GuardarReporte(IDhtReporte){
+    $.mobile.loading('show', {
+        text: 'Guardando información...',
+        textVisible: true,
+        theme: 'a',
+        html: ""
+    });
+    $.post(
+            servidor + "sirac/API/representante/registrarReporte/" + getUsuario() + "/" + getToken() + "/" + IDhtReporte,
+            {'farmacia':1, 'potencial':'A', 'prescriptor':2},
+            function(data){
+                $('#reporteGuardado').popup();
+                $('#reporteGuardado').popup('open');
+                $.mobile.changePage('#reporte', {
+                    transition: 'slide'
+                });
+    });
+    $.mobile.loading('hide');
+}
+
+
+$(document).on('pageshow', '#doctores', function() {
+    //verificamos el estado del plan de trabajo del dia de hoy
+    $.mobile.loading('show', {
+        text: 'Cargando información...',
+        textVisible: true,
+        theme: 'a',
+        html: ""
+    });
+    $.get(
+            servidor + "sirac/API/medicos/verMedicos",
+            {},
+            function(data){
+                result = jQuery.parseJSON(data);
+                var text = "";
+                for (var i = 0; i < result.medicos.length; i++) {
+                    var medico = result.medicos[i];
+                    text += '<li><a href="#" data-transition="slide">' + medico.NombreMedico + '</a></li>';
+                }
+                $("#listaDoctoresGeneral").append(text).listview('refresh');//trigger('create');
+                $.mobile.loading('hide');
+    });
 });

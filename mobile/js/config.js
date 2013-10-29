@@ -1,4 +1,5 @@
-var servidor = 'http://localhost/'; //'http://192.168.0.17/';
+//var servidor = 'http://www.enginetec.com.mx/'; //'http://192.168.0.17/';
+var servidor = window.location.protocol + "//" + window.location.host + "/";
 
 function setToken(tk){
     window.localStorage.setItem("token",tk);
