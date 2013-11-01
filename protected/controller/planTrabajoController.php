@@ -12,6 +12,7 @@ class planTrabajoController extends DooController {
             $result = array('acceso' => 'correcto');
             $planTrabajo = new htPlanTrabajo();
             $planTrabajo->fecha_visita = date("Y-m-d");
+            $planTrabajo->id_usuario = $usuario;
             $arrayPlanTrabajo = $this->db()->relate($planTrabajo, 'ctMedico'); //->find($planTrabajo);
             $cantidadVisitar = sizeof($arrayPlanTrabajo);
             if ($cantidadVisitar > 0) {
