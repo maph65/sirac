@@ -21,7 +21,7 @@ class planTrabajoController extends DooController {
                     $v = array(
                         'idHtPlanTrabajo' => $visita->id_ht_plan_trabajo,
                         'idMedico' => $visita->id_medico,
-                        'NombreMedico' => $visita->ctMedico->nombre . ' ' . $visita->ctMedico->apaterno . ' ' . $visita->ctMedico->amaterno,
+                        'NombreMedico' => utf8_encode($visita->ctMedico->nombre . ' ' . $visita->ctMedico->apaterno . ' ' . $visita->ctMedico->amaterno),
                         'idSitio' => $visita->id_sitio,
                         'fechaVisita' => $visita->fecha_visita,
                         'horaVisita' => $visita->hora_visita,
