@@ -32,6 +32,7 @@ $route['*']['/API/representante/registrarReporte/:usuario/:token/:idhtreporte'] 
 
 //Ver medicos
 $route['*']['/API/medicos/verMedicos'] = array('medicosController', 'consultarMedicos');
+$route['*']['/API/medicos/verInformacionMedico/:idMedico'] = array('medicosController', 'verInformacionMedico');
 
 $route['*']['/API/representante/quitarMedico/:usuario/:idPlan'] = array('planTrabajoController', 'quitarMedico');
 

@@ -18,6 +18,29 @@ class medicosController extends DooController {
         return true;
     }
 
+    public function verInformacionMedico() {
+        Doo::loadModel('ctMedico');
+        $idMedico = $this->params['idMedico'];
+        $medico = new ctMedico();
+        $medico->id_medico = $idMedico;
+        $medico = $this->db()->find($medico, array('limit' => 1));
+        $result = array();
+        if ($medico) {
+            $result['encontrado'] = TRUE;
+            $result['datosMedico'] = array(
+                'idMedico' => $medico->id_medico,
+                'nombre' => $medico->nombre . ' ' . $medico->apaterno . ' ' . $medico->amaterno,
+                'cedula' => $medico->cedula,
+                'celular' => $medico->celular,
+                'fechaNac' => $medico->fecha_nac,
+                'universidad' => $medico->universidad
+            );
+        } else {
+            $result['encontrado'] = FALSE;
+        }
+        echo json_encode($result);
+    }
+
 }
 
 ?>

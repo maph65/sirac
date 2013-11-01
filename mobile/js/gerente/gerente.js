@@ -73,7 +73,7 @@ $(document).on('pageshow', '#agendaDoctores', function() {
                 var text = "";
                 for (var i = 0; i < result.medicos.length; i++) {
                     var medico = result.medicos[i];
-                    text += '<li><a href="#" data-transition="slide">' + medico.NombreMedico + '</a></li>';
+                    text += '<li><a href="#" onclick="verDetallesMedico(' + medico.idMedico + ')">' + medico.NombreMedico + '</a></li>';
                 }
                 $("#listaAgendaDoctores").append(text).listview('refresh');//trigger('create');
                 $.mobile.loading('hide');
@@ -144,4 +144,32 @@ function verInfoRep(idRepresentante) {
 
             });
     $.mobile.loading('hide');
+}
+
+
+function verDetallesMedico(idMedico) {
+    $.mobile.loading('show', {
+        text: 'Cargando información...',
+        textVisible: true,
+        theme: 'a',
+        html: ""
+    });
+    $.get(
+            servidor + "sirac/API/medicos/verInformacionMedico/" + idMedico,
+            {},
+            function(data) {
+                result = jQuery.parseJSON(data);
+                var text = "";
+                if (result.encontrado) {
+                    $("#datosMedicoNombre").html(result.datosMedico.nombre + "&nbsp;");
+                    $("#datosMedicoFechaNac").html(result.datosMedico.fechaNac + "&nbsp;");
+                    $("#datosMedicoCedula").html(result.datosMedico.cedula + "&nbsp;");
+                    $("#datosMedicoUniversidad").html(result.datosMedico.universidad + "&nbsp;");
+                    $("#datosMedicoCelular").html(result.datosMedico.celular + "&nbsp;");
+                    $.mobile.changePage('#detallesMedico', {
+                        transition: 'slide'
+                    });
+                }
+                $.mobile.loading('hide');
+            });
 }
