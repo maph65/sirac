@@ -324,6 +324,88 @@ CREATE TABLE IF NOT EXISTS `enginetec_com_mx_sirac`.`ht_reporte_plan_trabajo` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `enginetec_com_mx_sirac`.`rl_medico_representante`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `enginetec_com_mx_sirac`.`rl_medico_representante` ;
+
+CREATE TABLE IF NOT EXISTS `enginetec_com_mx_sirac`.`rl_medico_representante` (
+  `id_medico` INT UNSIGNED NOT NULL,
+  `usuario` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`id_medico`, `usuario`),
+  INDEX `fk_ct_medico_has_ct_usuario_ct_usuario1_idx` (`usuario` ASC),
+  INDEX `fk_ct_medico_has_ct_usuario_ct_medico1_idx` (`id_medico` ASC),
+  CONSTRAINT `fk_ct_medico_has_ct_usuario_ct_medico1`
+    FOREIGN KEY (`id_medico`)
+    REFERENCES `enginetec_com_mx_sirac`.`ct_medico` (`id_medico`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ct_medico_has_ct_usuario_ct_usuario1`
+    FOREIGN KEY (`usuario`)
+    REFERENCES `enginetec_com_mx_sirac`.`ct_usuario` (`usuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `enginetec_com_mx_sirac`.`ct_medicina`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `enginetec_com_mx_sirac`.`ct_medicina` ;
+
+CREATE TABLE IF NOT EXISTS `enginetec_com_mx_sirac`.`ct_medicina` (
+  `id_medicina` INT NOT NULL,
+  `nombre` VARCHAR(45) NULL,
+  `descripcion` VARCHAR(45) NULL,
+  PRIMARY KEY (`id_medicina`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `enginetec_com_mx_sirac`.`ct_presentacion`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `enginetec_com_mx_sirac`.`ct_presentacion` ;
+
+CREATE TABLE IF NOT EXISTS `enginetec_com_mx_sirac`.`ct_presentacion` (
+  `id_presentacion` INT NOT NULL,
+  `id_medicina` INT NOT NULL,
+  `tipo_presentacion` VARCHAR(45) NULL,
+  `dosis` VARCHAR(45) NULL,
+  PRIMARY KEY (`id_presentacion`),
+  INDEX `fk_ct_presentacion_ct_medicina1_idx` (`id_medicina` ASC),
+  CONSTRAINT `fk_ct_presentacion_ct_medicina1`
+    FOREIGN KEY (`id_medicina`)
+    REFERENCES `enginetec_com_mx_sirac`.`ct_medicina` (`id_medicina`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `enginetec_com_mx_sirac`.`ct_presentacion_has_ct_usuario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `enginetec_com_mx_sirac`.`ct_presentacion_has_ct_usuario` ;
+
+CREATE TABLE IF NOT EXISTS `enginetec_com_mx_sirac`.`ct_presentacion_has_ct_usuario` (
+  `id_presentacion` INT NOT NULL,
+  `representante` VARCHAR(30) NOT NULL,
+  `fecha` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`id_presentacion`, `representante`, `fecha`),
+  INDEX `fk_ct_presentacion_has_ct_usuario_ct_usuario1_idx` (`representante` ASC),
+  INDEX `fk_ct_presentacion_has_ct_usuario_ct_presentacion1_idx` (`id_presentacion` ASC),
+  CONSTRAINT `fk_ct_presentacion_has_ct_usuario_ct_presentacion1`
+    FOREIGN KEY (`id_presentacion`)
+    REFERENCES `enginetec_com_mx_sirac`.`ct_presentacion` (`id_presentacion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ct_presentacion_has_ct_usuario_ct_usuario1`
+    FOREIGN KEY (`representante`)
+    REFERENCES `enginetec_com_mx_sirac`.`ct_usuario` (`usuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
@@ -344,9 +426,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `enginetec_com_mx_sirac`;
-INSERT INTO `enginetec_com_mx_sirac`.`ct_usuario` (`usuario`, `clave`, `email`, `passwd`, `nombre`, `apaterno`, `amaterno`, `id_tipo_usuario`, `gerente`, `token`, `ultimo_acceso`) VALUES ('﻿gerente', 'GRT', 'gerente@cellpharma.com', 'gerente', 'GERENTE', 'PATERNO', 'MATERNO', 2, '', '', '');
+INSERT INTO `enginetec_com_mx_sirac`.`ct_usuario` (`usuario`, `clave`, `email`, `passwd`, `nombre`, `apaterno`, `amaterno`, `id_tipo_usuario`, `gerente`, `token`, `ultimo_acceso`) VALUES ('gerente', 'GRT', 'gerente@cellpharma.com', 'gerente', 'GERENTE', 'PATERNO', 'MATERNO', 2, '', '', '');
 INSERT INTO `enginetec_com_mx_sirac`.`ct_usuario` (`usuario`, `clave`, `email`, `passwd`, `nombre`, `apaterno`, `amaterno`, `id_tipo_usuario`, `gerente`, `token`, `ultimo_acceso`) VALUES ('ivoyahir', 'ICG', 'ivoyahir@cellpharma.com', 'ivo', 'IVO YAHIR', 'CORTEZ', 'GONZÁLEZ', 1, 'gerente', '', '');
-INSERT INTO `enginetec_com_mx_sirac`.`ct_usuario` (`usuario`, `clave`, `email`, `passwd`, `nombre`, `apaterno`, `amaterno`, `id_tipo_usuario`, `gerente`, `token`, `ultimo_acceso`) VALUES ('irvingl', 'IRLG', 'irvingl@cellpharma.com', 'irving', 'IRNVING RICARDO', 'GOMEZ', 'LUNA', 1, 'gerente', '', '');
+INSERT INTO `enginetec_com_mx_sirac`.`ct_usuario` (`usuario`, `clave`, `email`, `passwd`, `nombre`, `apaterno`, `amaterno`, `id_tipo_usuario`, `gerente`, `token`, `ultimo_acceso`) VALUES ('irvingl', 'IRLG', 'irvingl@cellpharma.com', 'irving', 'IRVING RICARDO', 'GOMEZ', 'LUNA', 1, 'gerente', '', '');
 
 COMMIT;
 
@@ -2076,6 +2158,364 @@ INSERT INTO `enginetec_com_mx_sirac`.`ct_ciclo` (`id_ciclo`, `fecha_inicio`, `fe
 INSERT INTO `enginetec_com_mx_sirac`.`ct_ciclo` (`id_ciclo`, `fecha_inicio`, `fecha_termino`) VALUES ('10', '2014-06-16', '2014-07-13');
 INSERT INTO `enginetec_com_mx_sirac`.`ct_ciclo` (`id_ciclo`, `fecha_inicio`, `fecha_termino`) VALUES ('11', '2014-07-14', '2014-08-10');
 INSERT INTO `enginetec_com_mx_sirac`.`ct_ciclo` (`id_ciclo`, `fecha_inicio`, `fecha_termino`) VALUES ('12', '2014-08-11', '2014-09-07');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `enginetec_com_mx_sirac`.`rl_medico_representante`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `enginetec_com_mx_sirac`;
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (1, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (2, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (3, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (4, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (5, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (6, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (7, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (8, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (9, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (10, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (11, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (12, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (13, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (14, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (15, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (16, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (17, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (18, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (19, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (20, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (21, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (22, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (23, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (24, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (25, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (26, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (27, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (28, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (29, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (30, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (31, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (32, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (33, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (34, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (35, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (36, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (37, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (38, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (39, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (40, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (41, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (42, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (43, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (44, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (45, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (46, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (47, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (48, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (49, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (50, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (51, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (52, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (53, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (54, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (55, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (56, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (57, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (58, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (59, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (60, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (61, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (62, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (63, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (64, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (65, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (66, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (67, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (68, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (69, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (70, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (71, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (72, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (73, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (74, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (75, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (76, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (77, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (78, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (79, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (80, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (81, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (82, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (83, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (84, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (85, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (86, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (87, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (88, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (89, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (90, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (91, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (92, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (93, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (94, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (95, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (96, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (97, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (98, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (99, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (100, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (101, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (102, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (103, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (104, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (105, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (106, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (107, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (108, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (109, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (110, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (111, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (112, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (113, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (114, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (115, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (116, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (117, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (118, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (119, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (120, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (121, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (122, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (123, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (124, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (125, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (126, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (127, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (128, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (129, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (130, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (131, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (132, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (133, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (134, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (135, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (136, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (137, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (138, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (139, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (140, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (141, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (142, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (143, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (144, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (145, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (146, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (147, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (148, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (149, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (150, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (151, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (152, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (153, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (154, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (155, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (156, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (157, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (158, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (159, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (160, 'irvingl');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (161, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (162, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (163, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (164, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (165, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (166, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (167, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (168, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (169, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (170, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (171, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (172, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (173, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (174, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (175, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (176, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (177, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (178, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (179, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (180, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (181, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (182, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (183, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (184, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (185, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (186, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (187, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (188, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (189, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (190, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (191, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (192, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (193, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (194, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (195, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (196, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (197, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (198, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (199, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (200, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (201, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (202, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (203, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (204, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (205, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (206, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (207, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (208, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (209, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (210, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (211, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (212, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (213, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (214, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (215, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (216, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (217, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (218, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (219, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (220, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (221, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (222, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (223, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (224, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (225, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (226, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (227, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (228, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (229, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (230, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (231, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (232, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (233, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (234, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (235, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (236, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (237, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (238, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (239, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (240, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (241, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (242, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (243, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (244, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (245, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (246, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (247, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (248, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (249, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (250, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (251, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (252, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (253, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (254, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (255, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (256, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (257, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (258, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (259, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (260, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (261, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (262, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (263, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (264, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (265, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (266, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (267, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (268, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (269, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (270, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (271, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (272, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (273, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (274, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (275, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (276, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (277, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (278, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (279, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (280, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (281, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (282, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (283, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (284, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (285, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (286, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (287, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (288, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (289, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (290, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (291, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (292, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (293, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (294, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (295, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (296, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (297, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (298, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (299, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (300, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (301, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (302, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (303, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (304, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (305, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (306, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (307, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (308, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (309, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (310, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (311, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (312, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (313, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (314, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (315, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (316, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (317, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (318, 'ivoyahir');
+INSERT INTO `enginetec_com_mx_sirac`.`rl_medico_representante` (`id_medico`, `usuario`) VALUES (319, 'ivoyahir');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `enginetec_com_mx_sirac`.`ct_medicina`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `enginetec_com_mx_sirac`;
+INSERT INTO `enginetec_com_mx_sirac`.`ct_medicina` (`id_medicina`, `nombre`, `descripcion`) VALUES (1, 'Zaxcell', 'Zaxcell');
+INSERT INTO `enginetec_com_mx_sirac`.`ct_medicina` (`id_medicina`, `nombre`, `descripcion`) VALUES (2, 'Kitoscell', 'Kitoscell');
+INSERT INTO `enginetec_com_mx_sirac`.`ct_medicina` (`id_medicina`, `nombre`, `descripcion`) VALUES (3, 'Accua Asceptic', 'Accua Asceptic');
+INSERT INTO `enginetec_com_mx_sirac`.`ct_medicina` (`id_medicina`, `nombre`, `descripcion`) VALUES (4, 'TricClean', 'TricClean');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `enginetec_com_mx_sirac`.`ct_presentacion`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `enginetec_com_mx_sirac`;
+INSERT INTO `enginetec_com_mx_sirac`.`ct_presentacion` (`id_presentacion`, `id_medicina`, `tipo_presentacion`, `dosis`) VALUES (1, 1, 'Gel', '30 Grs');
+INSERT INTO `enginetec_com_mx_sirac`.`ct_presentacion` (`id_presentacion`, `id_medicina`, `tipo_presentacion`, `dosis`) VALUES (2, 1, 'Gel', '5 Grs');
+INSERT INTO `enginetec_com_mx_sirac`.`ct_presentacion` (`id_presentacion`, `id_medicina`, `tipo_presentacion`, `dosis`) VALUES (3, 2, 'Tubo', '10 Gr.');
+INSERT INTO `enginetec_com_mx_sirac`.`ct_presentacion` (`id_presentacion`, `id_medicina`, `tipo_presentacion`, `dosis`) VALUES (4, 2, 'Tubo', '30 Gr.');
+INSERT INTO `enginetec_com_mx_sirac`.`ct_presentacion` (`id_presentacion`, `id_medicina`, `tipo_presentacion`, `dosis`) VALUES (5, 2, 'Tubo', '60 Gr.');
+INSERT INTO `enginetec_com_mx_sirac`.`ct_presentacion` (`id_presentacion`, `id_medicina`, `tipo_presentacion`, `dosis`) VALUES (6, 3, 'Gel', '30 Gr.');
+INSERT INTO `enginetec_com_mx_sirac`.`ct_presentacion` (`id_presentacion`, `id_medicina`, `tipo_presentacion`, `dosis`) VALUES (7, 3, 'Spray', '240 Ml.');
+INSERT INTO `enginetec_com_mx_sirac`.`ct_presentacion` (`id_presentacion`, `id_medicina`, `tipo_presentacion`, `dosis`) VALUES (8, 4, 'Mousse', '50 ml');
 
 COMMIT;
 

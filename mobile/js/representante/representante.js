@@ -57,6 +57,88 @@ $(document).on('pageshow', '#plan', function() {
     $.mobile.loading('hide');
 });
 
+
+$(document).on('pageshow', '#pedidos', function() {
+    //leemos el plan de trabajo del dia de hoy
+    $.mobile.loading('show', {
+        text: 'Actualizando información...',
+        textVisible: true,
+        theme: 'a',
+        html: ""
+    });
+    $.get(
+            servidor + "sirac/API/medicina/listarMedicamentos",
+            {},
+            function(data) {
+                //limpiamos los tados actuales antes de poner nuevos
+                $("#selectMedicamento").html("");
+                //ponemos nuevos datos
+                result = jQuery.parseJSON(data);
+                if (result.numeroMedicamentos > 0) {
+                    $('#selectMedicamento').html("");
+                    for (var i = 0; i < result.medicamentos.length; i++) {
+                        var medicamento = result.medicamentos[i];
+                        //alert(medico.idMedico);
+                        $('#selectMedicamento').append(new Option(medicamento.nombre, medicamento.id));
+                        //$("#listaDoctoresPlanTrabajo").append(text).listview('refresh');//trigger('create');
+                    }
+                    $('#selectMedicamento').selectmenu('refresh');
+                    $('#selectMedicamento').selectmenu(actualizarListaPresentaciones($('#selectMedicamento').val()));
+                } else {
+                    window.location = "index.html";
+                }
+            });
+    $.mobile.loading('hide');
+});
+
+function actualizarListaPresentaciones(idMedicamento){
+    //#selectPresentacion
+    $.mobile.loading('show', {
+        text: 'Actualizando información...',
+        textVisible: true,
+        theme: 'a',
+        html: ""
+    });
+    $.get(
+            servidor + "sirac/API/medicina/listarPresentaciones/"+idMedicamento,
+            {},
+            function(data) {
+                //limpiamos los tados actuales antes de poner nuevos
+                $("#selectPresentacion").html("");
+                //ponemos nuevos datos
+                result = jQuery.parseJSON(data);
+                if (result.numeroPresentaciones > 0) {
+                    $('#selectPresentacion').html("");
+                    for (var i = 0; i < result.presentaciones.length; i++) {
+                        var presentacion = result.presentaciones[i];
+                        //alert(medico.idMedico);
+                        $('#selectPresentacion').append(new Option(presentacion.descripcion, presentacion.id)).selectmenu('refresh',true );//.trigger('create');
+                    }
+                } else {
+                    window.location = "index.html";
+                }
+            });
+    $.mobile.loading('hide');
+}
+
+function guardarPedido(){
+    $.mobile.loading('show', {
+        text: 'Guardando pedido...',
+        textVisible: true,
+        theme: 'a',
+        html: ""
+    });
+    if($('#selectMedicamento').val() === 0 || $('#selectPresentacion').val() === 0  ){
+        alert('Debe seleccionar un medicamento o una presentación válida.');
+    }else{
+        alert('Su pedido se ha registrado exitosamente.');
+        $.mobile.changePage('#home', {
+            transition: 'slide'
+        });
+    }
+    $.mobile.loading('hide');
+}
+
 function detallesVisita(idMedico, idSitio, idHtPlanTrabajo) {
     htHoraPlanVisita = idHtPlanTrabajo;
     $.mobile.loading('show', {
@@ -115,14 +197,14 @@ function guardarHoraVisita(idHtPlanTrabajo) {
                     $('#horaGuardadaPopup').popup();
                     $('#horaGuardadaPopup').popup('open');
                 } else {
-                   alert(result.error);
+                    alert(result.error);
                 }
             });
     $.mobile.loading('hide');
 
 }
 
-function quitarMedico(idHtPlanTrabajo){
+function quitarMedico(idHtPlanTrabajo) {
     $.mobile.loading('show', {
         text: 'Eliminando médico...',
         textVisible: true,
@@ -130,7 +212,7 @@ function quitarMedico(idHtPlanTrabajo){
         html: ""
     });
     $.get(
-            servidor + "sirac/API/representante/quitarMedico/" + getUsuario() +  "/" + idHtPlanTrabajo ,
+            servidor + "sirac/API/representante/quitarMedico/" + getUsuario() + "/" + idHtPlanTrabajo,
             {},
             function(data) {
                 result = jQuery.parseJSON(data);
@@ -162,6 +244,9 @@ function activarPlanTrabajo() {
                 if (result.acceso === "correcto") {
                     if (result.activado) {
                         alert('Se ha activado correctamente el plan de trabajo.');
+                        $.mobile.changePage('#plan', {
+                            transition: 'slide'
+                        });
                     } else {
                         alert('No se ha podido activar el plan de trabajo. Asegurese de haber definido una hora para cada visita.');
                     }
@@ -196,12 +281,12 @@ $(document).on('pageshow', '#reporte', function() {
                                                 var medico = result2.medicos[i];
                                                 //alert(medico.idMedico);
                                                 var text;
-                                                if(medico.reportado==="Reportado"){
-                                                    text = '<li><a href="#" onclick="alert(\'Ya ha llenado el reporte de este Médico\')" data-transition="slide">' + medico.nombreMedico + ' <p class="ui-li-aside">'+ medico.reportado +'</p></a></li>';
-                                                }else{
-                                                    text = '<li><a href="#" onclick="creaReporte(' + medico.idMedico + ',' + medico.idSitio + ',' + medico.htPlanTrabajo + ')" data-transition="slide">' + medico.nombreMedico + ' <p class="ui-li-aside">'+ medico.reportado +'</p></a></li>';
+                                                if (medico.reportado === "Reportado") {
+                                                    text = '<li><a href="#" onclick="alert(\'Ya ha llenado el reporte de este Médico\')" data-transition="slide">' + medico.nombreMedico + ' <p class="ui-li-aside">' + medico.reportado + '</p></a></li>';
+                                                } else {
+                                                    text = '<li><a href="#" onclick="creaReporte(' + medico.idMedico + ',' + medico.idSitio + ',' + medico.htPlanTrabajo + ')" data-transition="slide">' + medico.nombreMedico + ' <p class="ui-li-aside">' + medico.reportado + '</p></a></li>';
                                                 }
-                                                
+
                                                 $("#listaDoctoresReporte").append(text).listview('refresh');//trigger('create');
                                             }
                                         } else {
@@ -209,7 +294,7 @@ $(document).on('pageshow', '#reporte', function() {
                                             var text = '<li>No hay plan de trabajo para el día de hoy</li>';
                                             $("#listaDoctoresReporte").append(text).listview('refresh');//trigger('create');
                                         }
-                                    } 
+                                    }
                                 }
                         );
                     } else {
@@ -221,7 +306,7 @@ $(document).on('pageshow', '#reporte', function() {
             });
 });
 
-function creaReporte(idMedico,idSitio,idHtPlan){
+function creaReporte(idMedico, idSitio, idHtPlan) {
     $.mobile.loading('show', {
         text: 'Actualizando información...',
         textVisible: true,
@@ -258,7 +343,7 @@ function creaReporte(idMedico,idSitio,idHtPlan){
 }
 
 
-function GuardarReporte(IDhtReporte){
+function GuardarReporte(IDhtReporte) {
     $.mobile.loading('show', {
         text: 'Guardando información...',
         textVisible: true,
@@ -267,13 +352,13 @@ function GuardarReporte(IDhtReporte){
     });
     $.post(
             servidor + "sirac/API/representante/registrarReporte/" + getUsuario() + "/" + getToken() + "/" + IDhtReporte,
-            {'farmacia':1, 'potencial':'A', 'prescriptor':2},
-            function(data){
-                $('#reporteGuardado').popup();
-                $('#reporteGuardado').popup('open');
-                $.mobile.changePage('#reporte', {
-                    transition: 'slide'
-                });
+            {'farmacia': 1, 'potencial': 'A', 'prescriptor': 2},
+    function(data) {
+        $('#reporteGuardado').popup();
+        $('#reporteGuardado').popup('open');
+        $.mobile.changePage('#reporte', {
+            transition: 'slide'
+        });
     });
     $.mobile.loading('hide');
 }
@@ -290,14 +375,41 @@ $(document).on('pageshow', '#doctores', function() {
     $.get(
             servidor + "sirac/API/medicos/verMedicos",
             {},
-            function(data){
+            function(data) {
                 result = jQuery.parseJSON(data);
                 var text = "";
                 for (var i = 0; i < result.medicos.length; i++) {
                     var medico = result.medicos[i];
-                    text += '<li><a href="#" data-transition="slide">' + medico.NombreMedico + '</a></li>';
+                    text += '<li><a href="#" data-transition="slide" onclick="verDetallesMedico(' + medico.idMedico + ')">' + medico.NombreMedico + '</a></li>';
                 }
                 $("#listaDoctoresGeneral").append(text).listview('refresh');//trigger('create');
                 $.mobile.loading('hide');
-    });
+            });
 });
+
+function verDetallesMedico(idMedico) {
+    $.mobile.loading('show', {
+        text: 'Cargando información...',
+        textVisible: true,
+        theme: 'a',
+        html: ""
+    });
+    $.get(
+            servidor + "sirac/API/medicos/verInformacionMedico/" + idMedico,
+            {},
+            function(data) {
+                result = jQuery.parseJSON(data);
+                var text = "";
+                if (result.encontrado) {
+                    $("#datosMedicoNombre").html(result.datosMedico.nombre + "&nbsp;");
+                    $("#datosMedicoFechaNac").html(result.datosMedico.fechaNac + "&nbsp;");
+                    $("#datosMedicoCedula").html(result.datosMedico.cedula + "&nbsp;");
+                    $("#datosMedicoUniversidad").html(result.datosMedico.universidad + "&nbsp;");
+                    $("#datosMedicoCelular").html(result.datosMedico.celular + "&nbsp;");
+                    $.mobile.changePage('#detallesMedico', {
+                        transition: 'slide'
+                    });
+                }
+                $.mobile.loading('hide');
+            });
+}

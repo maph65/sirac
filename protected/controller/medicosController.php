@@ -29,11 +29,11 @@ class medicosController extends DooController {
             $result['encontrado'] = TRUE;
             $result['datosMedico'] = array(
                 'idMedico' => $medico->id_medico,
-                'nombre' => $medico->nombre . ' ' . $medico->apaterno . ' ' . $medico->amaterno,
+                'nombre' => utf8_encode($medico->nombre . ' ' . $medico->apaterno . ' ' . $medico->amaterno),
                 'cedula' => $medico->cedula,
                 'celular' => $medico->celular,
                 'fechaNac' => $medico->fecha_nac,
-                'universidad' => $medico->universidad
+                'universidad' => utf8_encode($medico->universidad)
             );
         } else {
             $result['encontrado'] = FALSE;

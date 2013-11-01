@@ -28,6 +28,10 @@ $route['*']['/API/representante/detallesMedicoSitio/:usuario/:token/:medico/:sit
 $route['*']['/API/representante/fijarHoraVisita/:usuario/:token/:idHtPlanTrabajo/:horas/:minutos'] = array('planTrabajoController', 'setHoraMinutosPlanTrabajo');
 $route['*']['/API/representante/getDoctoresReporte/:usuario/:token'] = array('reportesController', 'getDoctoresReporte');
 
+//Medicinas
+$route['*']['/API/medicina/listarMedicamentos'] = array('medicamentosController', 'listarMedicamentos');
+$route['*']['/API/medicina/listarPresentaciones/:idMedicamento'] = array('medicamentosController', 'listarPresentaciones');
+
 $route['*']['/API/representante/registrarReporte/:usuario/:token/:idhtreporte'] = array('reportesController', 'guardarReporte');
 
 //Ver medicos
@@ -41,4 +45,6 @@ $route['*']['/API/representante/quitarMedico/:usuario/:idPlan'] = array('planTra
 $route['*']['/API/gerente/getRepresentantes/:usuario/:token'] = array('gerenteController', 'getRepresentantesGerente');
 $route['*']['/API/gerente/getPlanTrabajo/:usuario/:token/:representante'] = array('gerenteController', 'getPlanTrabajoActivo');
 $route['*']['/API/gerente/verInformacionRepresentante/:usuario/:token/:representante'] = array('gerenteController', 'verInformacionRepresentante');
+$route['*']['/API/gerente/verPlanTrabajo/:gerente/:token/:representante'] = array('planTrabajoController', 'verPlanTrabajo');
+
 ?>

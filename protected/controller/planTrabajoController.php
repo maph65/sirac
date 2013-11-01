@@ -178,7 +178,7 @@ class planTrabajoController extends DooController {
             if ($medico) {
                 $datosMedico = array(
                     'idMedico' => $medico->id_medico,
-                    'nombre' => $medico->nombre . ' ' . $medico->apaterno . ' ' . $medico->amaterno,
+                    'nombre' => utf8_encode($medico->nombre . ' ' . $medico->apaterno . ' ' . $medico->amaterno),
                     'cedula' => $medico->cedula,
                     'celular' => $medico->celular,
                     'fechaNac' => $medico->fecha_nac,
@@ -293,6 +293,50 @@ class planTrabajoController extends DooController {
             exit;
         }
     }
+    
+    
+    
+    public function verPlanTrabajo() {
+        Doo::loadClass('validaLogin');
+        Doo::loadModel('htPlanTrabajo');
+        $token = $this->params['token'];
+        $usuario = $this->params['representante'];
+        $gerente = $this->params['gerente'];
+        $result = array();
+        if (validaLogin::validaToken($token, $gerente)) {
+            $result = array('acceso' => 'correcto');
+            $planTrabajo = new htPlanTrabajo();
+            $planTrabajo->fecha_visita = date("Y-m-d");
+            $planTrabajo->id_usuario = $usuario;
+            //$arrayPlanTrabajo = $this->db()->relate($planTrabajo, 'ctMedico'); //->find($planTrabajo);
+            $arrayPlanTrabajo = $this->db()->relateMany($planTrabajo, array('ctMedico', 'htReportePlanTrabajo'));
+            $cantidadVisitar = sizeof($arrayPlanTrabajo);
+            if ($cantidadVisitar > 0) {
+                $result['numeroVisitas'] = $cantidadVisitar;
+                $arrayVisitas = array();
+                foreach ($arrayPlanTrabajo as $visita) {
+                    $arrayReporteMedico = array(
+                        'htPlanTrabajo' => $visita->id_ht_plan_trabajo,
+                        'idSitio' => $visita->id_sitio,
+                        'idMedico' => $visita->ctMedico->id_medico,
+                        'nombreMedico' => utf8_encode($visita->ctMedico->nombre . ' ' . $visita->ctMedico->apaterno . ' ' . $visita->ctMedico->amaterno)
+                    );
+                    if (empty($visita->htReportePlanTrabajo)) {
+                        $arrayReporteMedico['reportado'] = "No reportado";
+                    } else {
+                        $arrayReporteMedico['reportado'] = "Reportado";
+                    }
+                    array_push($arrayVisitas, $arrayReporteMedico);
+                }
+                $result['visitas'] = $arrayVisitas;
+            }
+        } else {
+            $result = array('acceso' => 'denegado');
+        }
+        //Imprimimos la respuesta como objeto json
+        echo json_encode($result);
+    }
+    
 
 }
 

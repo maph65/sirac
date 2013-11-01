@@ -99,6 +99,34 @@ function verPlanRepresentante(idRepresentante) {
                 result = jQuery.parseJSON(data);
                 if (result.acceso === "correcto") {
                     if (result.planActivo) {
+                        $.get(
+                                servidor + "sirac/API/gerente/verPlanTrabajo/" + getUsuario() + "/" + getToken() + "/" + idRepresentante,
+                                {},
+                                function(data) {
+                                    $("#listaDoctoresPlanTrabajo").html("");
+                                    result2 = jQuery.parseJSON(data);
+                                    if (result2.acceso === "correcto") {
+                                        if (result2.visitas.length > 0) {
+                                            for (var i = 0; i < result2.visitas.length; i++) {
+                                                var medico = result2.visitas[i];
+                                                //alert(medico.idMedico);
+                                                var text;
+                                                if (medico.reportado === "Reportado") {
+                                                    text = '<li><a href="#" data-transition="slide">' + medico.nombreMedico + ' <p class="ui-li-aside">' + medico.reportado + '</p></a></li>';
+                                                } else {
+                                                    text = '<li><a href="#" onclick="alert(\'Este reporte médico aún no esta disponible.\')" data-transition="slide">' + medico.nombreMedico + ' <p class="ui-li-aside">' + medico.reportado + '</p></a></li>';
+                                                }
+
+                                                $("#listaDoctoresPlanTrabajo").append(text).listview('refresh');//trigger('create');
+                                            }
+                                        } else {
+                                            //No hay medico que visitar el día de hoy
+                                            var text = '<li>No hay plan de trabajo para el día de hoy</li>';
+                                            $("#listaDoctoresPlanTrabajo").append(text).listview('refresh');//trigger('create');
+                                        }
+                                    }
+                                }
+                        );
                         $.mobile.changePage('#detallesPlanTrabajo', {
                             transition: 'slide'
                         });

@@ -23,7 +23,7 @@ class reportesController extends DooController {
                         'htPlanTrabajo' => $planTrabajo->id_ht_plan_trabajo,
                         'idSitio' => $planTrabajo->id_sitio,
                         'idMedico' => $planTrabajo->ctMedico->id_medico,
-                        'nombreMedico' => $planTrabajo->ctMedico->nombre . ' ' . $planTrabajo->ctMedico->apaterno . ' ' . $planTrabajo->ctMedico->amaterno
+                        'nombreMedico' => utf8_encode($planTrabajo->ctMedico->nombre . ' ' . $planTrabajo->ctMedico->apaterno . ' ' . $planTrabajo->ctMedico->amaterno)
                     );
                     if (empty($planTrabajo->htReportePlanTrabajo)) {
                         $arrayReporteMedico['reportado'] = "No reportado";

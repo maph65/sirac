@@ -89,11 +89,11 @@ $dbmap['presentacionHasUsuario']['belongs_to']['ctPresentacion'] = array('foreig
  * array('localhost', 'database', 'root', '1234', 'mysql', true, 'collate'=>'utf8_unicode_ci', 'charset'=>'utf8'); 
  */
 
- $dbconfig['dev'] = array('localhost', 'sirac', 'root', 'cete8653', 'mysql', true);
- $dbconfig['prod'] = array('localhost', 'sirac', 'root', 'cete8653', 'mysql', true);
+ //$dbconfig['dev'] = array('localhost', 'sirac', 'root', 'cete8653', 'mysql', true);
+ //$dbconfig['prod'] = array('localhost', 'sirac', 'root', 'cete8653', 'mysql', true);
 
-//$dbconfig['dev'] = array('localhost', 'enginetec_com_mx_sirac', 'engin_sirac', 'cete8653', 'mysql', true);
-//$dbconfig['prod'] = array('localhost', 'enginetec_com_mx_sirac', 'engin_sirac', 'cete8653', 'mysql', true);
+$dbconfig['dev'] = array('localhost', 'enginetec_com_mx_sirac', 'engin_sirac', 'cete8653', 'mysql', true);
+$dbconfig['prod'] = array('localhost', 'enginetec_com_mx_sirac', 'engin_sirac', 'cete8653', 'mysql', true);
  
  
 
