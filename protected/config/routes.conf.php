@@ -39,4 +39,5 @@ $route['*']['/API/representante/quitarMedico/:usuario/:idPlan'] = array('planTra
 //Gerente
 $route['*']['/API/gerente/getRepresentantes/:usuario/:token'] = array('gerenteController', 'getRepresentantesGerente');
 $route['*']['/API/gerente/getPlanTrabajo/:usuario/:token/:representante'] = array('gerenteController', 'getPlanTrabajoActivo');
+$route['*']['/API/gerente/verInformacionRepresentante/:usuario/:token/:representante'] = array('gerenteController', 'verInformacionRepresentante');
 ?>

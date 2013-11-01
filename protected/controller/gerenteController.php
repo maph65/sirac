@@ -14,25 +14,24 @@ class gerenteController extends DooController {
             $ctUsuario->gerente = $usuario;
             $arrayRepresentantes = $ctUsuario->find();
             $result['numRepresentantes'] = sizeof($arrayRepresentantes);
-            if(!empty($arrayRepresentantes)){
+            if (!empty($arrayRepresentantes)) {
                 $arrayDatosRep = array();
-                foreach($arrayRepresentantes as $representante){
+                foreach ($arrayRepresentantes as $representante) {
                     $temp = array(
                         'idRepresentante' => $representante->usuario,
-                        'nombreRepresentante' => utf8_encode($representante->nombre. ' ' .$representante->apaterno. ' '.$representante->amaterno)
+                        'nombreRepresentante' => utf8_encode($representante->nombre . ' ' . $representante->apaterno . ' ' . $representante->amaterno)
                     );
                     array_push($arrayDatosRep, $temp);
                 }
                 $result['representantes'] = $arrayDatosRep;
             }
-        }else{
+        } else {
             $result = array('acceso' => 'denegado');
         }
         //Imprimimos la respuesta como objeto json
         echo json_encode($result);
     }
-    
-    
+
     public function getPlanTrabajoActivo() {
         Doo::loadModel('htPlanTrabajo');
         Doo::loadClass('validaLogin');
@@ -53,6 +52,36 @@ class gerenteController extends DooController {
             } else {
                 //No se encontraron planes de trabajo activo o no hay planes de trabajo
                 $result['planActivo'] = FALSE;
+            }
+        } else {
+            $result = array('acceso' => 'denegado');
+        }
+        echo json_encode($result);
+    }
+
+    public function verInformacionRepresentante() {
+        Doo::loadModel('htPlanTrabajo');
+        Doo::loadClass('validaLogin');
+        $token = $this->params['token'];
+        $usuario = $this->params['usuario'];
+        $representante = $this->params['representante'];
+        $result = array();
+        if (validaLogin::validaToken($token, $usuario)) {
+            $result = array('acceso' => 'correcto');
+            $rep = new ctUsuario();
+            $rep->usuario = $representante;
+            $rep->gerente = $usuario;
+            $rep = $this->db()->find($rep, array('limit' => 1));
+            if ($rep) {
+                $DatosRep = array(
+                    'nombre' => utf8_encode($rep->nombre . ' ' . $rep->apaterno . ' ' . $rep->amaterno),
+                    'email' => utf8_encode($rep->email),
+                    'clave' => $rep->clave,
+                    'ultimoAcceso' => $rep->ultimo_acceso
+                );
+                $result['informacion'] = $DatosRep;
+            } else {
+                $result['error'] = "Representante no encontrado.";
             }
         } else {
             $result = array('acceso' => 'denegado');

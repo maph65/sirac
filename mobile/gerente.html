@@ -73,6 +73,7 @@
             <div data-role="navbar">
                 <ul>
                     <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
+                    <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/back.png"><br />Regresar</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" onclick="window.localStorage.clear();" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -97,6 +98,7 @@
             <div data-role="navbar">
                 <ul>
                     <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
+                    <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/back.png"><br />Regresar</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" onclick="window.localStorage.clear();" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -118,6 +120,39 @@
             <div data-role="navbar">
                 <ul>
                     <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
+                    <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/back.png"><br />Regresar</a></li>
+                    <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
+                    <li><a href="index.html" onclick="window.localStorage.clear();" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
+                </ul>
+            </div><!-- /navbar -->
+        </div><!-- /footer -->
+    </div>
+    
+    <!--Agenda de representantes-->
+    <div data-role="page" id="InfoRepresentante" data-theme="a">
+        <div data-role="header" data-position="inline">
+            <a href="#agendaRep" data-direction="reverse"  data-transition="slide" data-theme="a">Regresar</a>
+            <h1>Informaci&oacute;n del representante</h1>
+        </div>
+        <div data-role="content">
+            <h2>Detalles del representante</h2>
+            <div class="ui-grid-a ui-responsive">
+                <div class="ui-block-a"><div class="ui-body ui-body-d">Nombre</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="repNombre">&nbsp;</div></div>
+                <div class="ui-block-a"><div class="ui-body ui-body-d">Email</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="repEmail">&nbsp;</div></div>
+                <div class="ui-block-a"><div class="ui-body ui-body-d">Clave</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="repClave">&nbsp;</div></div>
+                <div class="ui-block-a"><div class="ui-body ui-body-d">&Uacute;ltimo acceso:</div></div>
+                <div class="ui-block-b"><div class="ui-body ui-body-d" id="repUltimoAcceso">&nbsp;</div></div>
+            </div>
+            <br />
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
+                    <li><a href="#agendaRep" data-direction="reverse" data-transition="slide"><img src="media/back.png"><br />Regresar</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" onclick="window.localStorage.clear();" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
@@ -129,16 +164,17 @@
     <div data-role="page" id="agendaDoctores" data-theme="a">
         <div data-role="header" data-position="inline">
             <a href="#home" data-direction="reverse"  data-transition="slide" data-theme="a">Regresar</a>
-            <h1>Agenda de representantes</h1>
+            <h1>Agenda de doctores</h1>
         </div>
         <div data-role="content">
-            <ul data-role="listview" data-theme="d" data-inset="true" id="listaAgendaDoctores"> 
+            <ul data-role="listview" data-theme="c" id="listaAgendaDoctores"> 
             </ul>
         </div>
         <div data-role="footer" data-position="fixed">
             <div data-role="navbar">
                 <ul>
                     <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
+                    <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/back.png"><br />Regresar</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" onclick="window.localStorage.clear();" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
