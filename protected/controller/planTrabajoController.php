@@ -103,6 +103,7 @@ class planTrabajoController extends DooController {
         if (validaLogin::validaToken($token, $usuario)) {
             $result = array('acceso' => 'correcto');
             $planTrabajo = new htPlanTrabajo();
+            $planTrabajo->id_usuario = $usuario;
             $planTrabajo->fecha_visita = date("Y-m-d");
             $planTrabajo->activo = 1;
             $planTrabajo = $this->db()->find($planTrabajo, array('limit' => 1));
