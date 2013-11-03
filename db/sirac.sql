@@ -2,9 +2,6 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-DROP SCHEMA IF EXISTS `sirac` ;
-CREATE SCHEMA IF NOT EXISTS `sirac` DEFAULT CHARACTER SET latin1 COLLATE latin1_spanish_ci ;
-USE `sirac` ;
 
 -- -----------------------------------------------------
 -- Table `sirac`.`ct_tipo_usuario`
@@ -370,7 +367,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sirac`.`ct_presentacion` ;
 
 CREATE  TABLE IF NOT EXISTS `sirac`.`ct_presentacion` (
-  `id_presentacion` INT NOT NULL ,
+  `id_presentacion` INT UNSIGNED NOT NULL ,
   `id_medicina` INT NOT NULL ,
   `tipo_presentacion` VARCHAR(45) NULL ,
   `dosis` VARCHAR(45) NULL ,
@@ -408,7 +405,58 @@ CREATE  TABLE IF NOT EXISTS `sirac`.`ct_presentacion_has_ct_usuario` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-USE `sirac` ;
+
+-- -----------------------------------------------------
+-- Table `sirac`.`ht_mesanjes_usuario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sirac`.`ht_mesanjes_usuario` ;
+
+CREATE  TABLE IF NOT EXISTS `sirac`.`ht_mesanjes_usuario` (
+  `id_mensaje` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `mensaje` LONGTEXT NOT NULL ,
+  `emisor` VARCHAR(30) NOT NULL ,
+  `receptor` VARCHAR(30) NOT NULL ,
+  `leido` TINYINT NOT NULL DEFAULT 0 ,
+  PRIMARY KEY (`id_mensaje`) ,
+  INDEX `fk_msj_emisor_idx` (`emisor` ASC) ,
+  INDEX `fk_msj_receptor_idx` (`receptor` ASC) ,
+  CONSTRAINT `fk_msj_emisor`
+    FOREIGN KEY (`emisor` )
+    REFERENCES `sirac`.`ct_usuario` (`usuario` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_msj_receptor`
+    FOREIGN KEY (`receptor` )
+    REFERENCES `sirac`.`ct_usuario` (`usuario` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sirac`.`rl_reporte_medicamento`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sirac`.`rl_reporte_medicamento` ;
+
+CREATE  TABLE IF NOT EXISTS `sirac`.`rl_reporte_medicamento` (
+  `id_ht_plan_trabajo` INT UNSIGNED NOT NULL ,
+  `id_presentacion` INT UNSIGNED NOT NULL ,
+  `cantidad` INT UNSIGNED NOT NULL ,
+  PRIMARY KEY (`id_ht_plan_trabajo`, `id_presentacion`) ,
+  INDEX `fk_reporte_medicamento_idx` (`id_ht_plan_trabajo` ASC) ,
+  INDEX `fk_medicamento_prese_idx` (`id_presentacion` ASC) ,
+  CONSTRAINT `fk_reporte_medicamento`
+    FOREIGN KEY (`id_ht_plan_trabajo` )
+    REFERENCES `sirac`.`ht_reporte_plan_trabajo` (`id_ht_plan_trabajo` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_medicamento_prese`
+    FOREIGN KEY (`id_presentacion` )
+    REFERENCES `sirac`.`ct_presentacion` (`id_presentacion` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
