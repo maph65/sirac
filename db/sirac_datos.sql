@@ -410,11 +410,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sirac`.`ht_mesanjes_usuario`
+-- Table `sirac`.`ht_mensajes_usuario`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sirac`.`ht_mesanjes_usuario` ;
+DROP TABLE IF EXISTS `sirac`.`ht_mensajes_usuario` ;
 
-CREATE  TABLE IF NOT EXISTS `sirac`.`ht_mesanjes_usuario` (
+CREATE  TABLE IF NOT EXISTS `sirac`.`ht_mensajes_usuario` (
   `id_mensaje` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `mensaje` LONGTEXT NOT NULL ,
   `emisor` VARCHAR(30) NOT NULL ,

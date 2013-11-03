@@ -2,6 +2,9 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
+DROP SCHEMA IF EXISTS `sirac` ;
+CREATE SCHEMA IF NOT EXISTS `sirac` DEFAULT CHARACTER SET latin1 COLLATE latin1_spanish_ci ;
+USE `sirac` ;
 
 -- -----------------------------------------------------
 -- Table `sirac`.`ct_tipo_usuario`
@@ -407,11 +410,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sirac`.`ht_mesanjes_usuario`
+-- Table `sirac`.`ht_mensajes_usuario`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sirac`.`ht_mesanjes_usuario` ;
+DROP TABLE IF EXISTS `sirac`.`ht_mensajes_usuario` ;
 
-CREATE  TABLE IF NOT EXISTS `sirac`.`ht_mesanjes_usuario` (
+CREATE  TABLE IF NOT EXISTS `sirac`.`ht_mensajes_usuario` (
   `id_mensaje` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `mensaje` LONGTEXT NOT NULL ,
   `emisor` VARCHAR(30) NOT NULL ,
@@ -457,6 +460,7 @@ CREATE  TABLE IF NOT EXISTS `sirac`.`rl_reporte_medicamento` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+USE `sirac` ;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
