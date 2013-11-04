@@ -1,8 +1,21 @@
 var htHoraPlanVisita = 0;
 var reporteHtPlanTrabajoID = 0;
+var usuarioMensajeChat = "";
 
 $(document).on('pageshow', '#home', function() {
     //verificamos el estado del plan de trabajo del dia de hoy
+    $.get(
+            servidor + "sirac/API/chat/getNumeroMensajesNuevos/" + getUsuario() + "/" + getToken(),
+            {},
+            function(data) {
+                //alert(data);
+                result = jQuery.parseJSON(data);
+                if (result.acceso === "correcto") {
+                    $("#noLeidos").html(result.sinLeer + ' Mensajes sin leer');
+                } else {
+                    window.location = "index.html";
+                }
+            });
     $.get(
             servidor + "sirac/API/representante/planActivo/" + getUsuario() + "/" + getToken(),
             {},
@@ -12,6 +25,7 @@ $(document).on('pageshow', '#home', function() {
                 if (result.acceso === "correcto") {
                     if (result.planActivo) {
                         $("#statusPlan").html("Activo");
+
                     } else {
                         $("#statusPlan").html("Inactivo");
                     }
@@ -67,7 +81,7 @@ $(document).on('pageshow', '#pedidos', function() {
         html: ""
     });
     $.get(
-            servidor + "sirac/API/medicina/listarMedicamentos",
+            servidor + "sirac/API/medicina/listarMedicamentos/" + getUsuario() + "/" + getToken(),
             {},
             function(data) {
                 //limpiamos los tados actuales antes de poner nuevos
@@ -92,7 +106,7 @@ $(document).on('pageshow', '#pedidos', function() {
     $.mobile.loading('hide');
 });
 
-function actualizarListaPresentaciones(idMedicamento){
+function actualizarListaPresentaciones(idMedicamento) {
     //#selectPresentacion
     $.mobile.loading('show', {
         text: 'Actualizando información...',
@@ -101,7 +115,7 @@ function actualizarListaPresentaciones(idMedicamento){
         html: ""
     });
     $.get(
-            servidor + "sirac/API/medicina/listarPresentaciones/"+idMedicamento,
+            servidor + "sirac/API/medicina/listarPresentaciones/" + idMedicamento + "/" + getUsuario() + "/" + getToken(),
             {},
             function(data) {
                 //limpiamos los tados actuales antes de poner nuevos
@@ -113,7 +127,7 @@ function actualizarListaPresentaciones(idMedicamento){
                     for (var i = 0; i < result.presentaciones.length; i++) {
                         var presentacion = result.presentaciones[i];
                         //alert(medico.idMedico);
-                        $('#selectPresentacion').append(new Option(presentacion.descripcion, presentacion.id)).selectmenu('refresh',true );//.trigger('create');
+                        $('#selectPresentacion').append(new Option(presentacion.descripcion, presentacion.id)).selectmenu('refresh', true);//.trigger('create');
                     }
                 } else {
                     alert('No hay presentaciones');
@@ -123,16 +137,16 @@ function actualizarListaPresentaciones(idMedicamento){
     $.mobile.loading('hide');
 }
 
-function guardarPedido(){
+function guardarPedido() {
     $.mobile.loading('show', {
         text: 'Guardando pedido...',
         textVisible: true,
         theme: 'a',
         html: ""
     });
-    if($('#selectMedicamento').val() === 0 || $('#selectPresentacion').val() === 0  ){
+    if ($('#selectMedicamento').val() === 0 || $('#selectPresentacion').val() === 0) {
         alert('Debe seleccionar un medicamento o una presentación válida.');
-    }else{
+    } else {
         alert('Su pedido se ha registrado exitosamente.');
         $.mobile.changePage('#home', {
             transition: 'slide'
@@ -214,7 +228,7 @@ function quitarMedico(idHtPlanTrabajo) {
         html: ""
     });
     $.get(
-            servidor + "sirac/API/representante/quitarMedico/" + getUsuario() + "/" + idHtPlanTrabajo,
+            servidor + "sirac/API/representante/quitarMedico/" + getUsuario() + "/" + idHtPlanTrabajo + "/" + getToken(),
             {},
             function(data) {
                 result = jQuery.parseJSON(data);
@@ -375,7 +389,7 @@ $(document).on('pageshow', '#doctores', function() {
         html: ""
     });
     $.get(
-            servidor + "sirac/API/medicos/verMedicos",
+            servidor + "sirac/API/medicos/verMedicos/" + getUsuario() + "/" + getToken(),
             {},
             function(data) {
                 result = jQuery.parseJSON(data);
@@ -397,7 +411,7 @@ function verDetallesMedico(idMedico) {
         html: ""
     });
     $.get(
-            servidor + "sirac/API/medicos/verInformacionMedico/" + idMedico,
+            servidor + "sirac/API/medicos/verInformacionMedico/" + idMedico + "/" + getUsuario() + "/" + getToken(),
             {},
             function(data) {
                 result = jQuery.parseJSON(data);
@@ -414,4 +428,70 @@ function verDetallesMedico(idMedico) {
                 }
                 $.mobile.loading('hide');
             });
+}
+
+
+//chat
+
+$(document).on("pageinit", "#chat", function() {
+    $("#autocompletarUsuarios").on("listviewbeforefilter", function(e, data) {
+        var $ul = $(this),
+                $input = $(data.input),
+                value = $input.val(),
+                html = "";
+        $ul.html("");
+        if (value && value.length > 2) {
+            $ul.html("<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>");
+            $ul.listview("refresh");
+            $.post(
+                    servidor + "sirac/API/chat/getListaUsuarios/" + getUsuario() + "/" + getToken(),
+                    {'q': $input.val()},
+            function(data) {
+                result = jQuery.parseJSON(data);
+                if (result.numUsuarios > 0) {
+                    for (var i = 0; i < result.numUsuarios; i++) {
+                        html += '<li onclick="cargarConversacion(\'' + result.usuarios[i].usuario + '\')"><a href="#">' + result.usuarios[i].nombre + '<a></li>';
+                    }
+                    $ul.html(html);
+                    $ul.listview("refresh");
+                    $ul.trigger("updatelayout");
+                }
+            }
+            );
+        }
+    });
+});
+
+
+function cargarConversacion(usuario){
+    usuarioMensajeChat = usuario;
+    $.mobile.loading('show', {
+        text: 'Cargando información...',
+        textVisible: true,
+        theme: 'a',
+        html: ""
+    });
+    $.get(
+            servidor + "sirac/API/chat/getConversacion/" + getUsuario() + "/" + getToken() + "/" + usuario,
+            {},
+            function(data) {
+                //alert(data);
+                result = jQuery.parseJSON(data);
+                var text = "";
+                if (result.acceso==="correcto") {
+                    $("#contenidoConversacion").html("<li></li>");
+                    $.mobile.changePage('#verConversacion', {
+                        transition: 'slide'
+                    });
+                    $("#contenidoConversacion").listview("refresh");
+                }
+                $.mobile.loading('hide');
+            });
+}
+
+function enviarMensaje(){
+    //$("#contenidoConversacion").append('<li style="text-align:right; background-color:#BBDEFF;">'+ $('textarea#contenidoNuevoMensaje').val()+ '</li>');
+    $("#contenidoConversacion").append('<li style="text-align:right; background-color:#BBDEFF;">'+ $('#contenidoNuevoMensaje').val()+ '</li>');
+    $('#contenidoNuevoMensaje').val("");
+    $("#contenidoConversacion").listview("refresh");
 }

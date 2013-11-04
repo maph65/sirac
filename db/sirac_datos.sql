@@ -446,11 +446,11 @@ CREATE  TABLE IF NOT EXISTS `sirac`.`rl_reporte_medicamento` (
   `id_presentacion` INT UNSIGNED NOT NULL ,
   `cantidad` INT UNSIGNED NOT NULL ,
   PRIMARY KEY (`id_ht_plan_trabajo`, `id_presentacion`) ,
-  INDEX `fk_reporte_medicamento_idx` (`id_ht_plan_trabajo` ASC) ,
   INDEX `fk_medicamento_prese_idx` (`id_presentacion` ASC) ,
-  CONSTRAINT `fk_reporte_medicamento`
+  INDEX `fk_plan_medicamento_idx` (`id_ht_plan_trabajo` ASC) ,
+  CONSTRAINT `fk_plan_medicamento`
     FOREIGN KEY (`id_ht_plan_trabajo` )
-    REFERENCES `sirac`.`ht_reporte_plan_trabajo` (`id_ht_plan_trabajo` )
+    REFERENCES `sirac`.`ht_plan_trabajo` (`id_ht_plan_trabajo` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_medicamento_prese`

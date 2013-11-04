@@ -241,62 +241,63 @@ class planTrabajoController extends DooController {
             $htPlanTrabajo = new htPlanTrabajo();
             $htPlanTrabajo->id_ht_plan_trabajo = $idPlanTrabajo;
             $htPlanTrabajo->activo = 0;
-            $htPlanTrabajo = $this->db()->find($htPlanTrabajo,array('limit'=>1));
-            if($htPlanTrabajo){
-                $htPlanTrabajo->hora_visita = $horas.':'.$minutos.':00';
+            $htPlanTrabajo = $this->db()->find($htPlanTrabajo, array('limit' => 1));
+            if ($htPlanTrabajo) {
+                $htPlanTrabajo->hora_visita = $horas . ':' . $minutos . ':00';
                 $htPlanTrabajo->update();
                 $result['actualizado'] = 'ok';
-            }else{
+            } else {
                 $result['actualizado'] = 'No se puede actualizar la hora. Este plan de trabajo ya esta activo.';
             }
-        }else{
+        } else {
             $result = array('acceso' => 'denegado');
         }
         echo json_encode($result);
     }
-    
+
     public function quitarMedico() {
         Doo::loadModel('htPlanTrabajo');
         Doo::loadModel('ctUsuario');
         Doo::loadModel('ctCiclo');
         Doo::loadClass('diaSemanaCiclo');
-        $idUsuario = $this->params['usuario'];
+        Doo::loadClass('validaLogin');
+        $token = $this->params['token'];
+        $usuario = $this->params['usuario'];
         $idPlan = $this->params['idPlan'];
-        $usuario = $this->db()->find(new ctUsuario(), array('where' => 'usuario = \'' . $idUsuario.'\'', 'limit' => 1));
-        $htPlan = $this->db()->find(new htPlanTrabajo(), array('where' => 'id_ht_plan_trabajo = ' . $idPlan, 'limit' => 1));
-        $planTrabajo = new htPlanTrabajo();
-        $ciclo = $this->db()->find(new ctCiclo(), array('where' => 'fecha_inicio<="' . date("Y-m-d") . '" AND fecha_termino>="' . date("Y-m-d") . '"', 'limit' => 1));
-        if ($ciclo) {
-            $diaSemana = diaSemanaCiclo::obtenDiaSemanaCiclo($ciclo->fecha_inicio);
+        if (validaLogin::validaToken($token, $usuario)) {
+            $htPlan = $this->db()->find(new htPlanTrabajo(), array('where' => 'id_ht_plan_trabajo = ' . $idPlan, 'limit' => 1));
             $planTrabajo = new htPlanTrabajo();
-            $planTrabajo->semana = $diaSemana['NumSemana'];
-            $planTrabajo->id_dia = $diaSemana['NumDia'];
-            $planTrabajo->id_usuario = $usuario->usuario;
-            $planTrabajo->activo = 0;
-            $arrayPlanTrabajo = $this->db()->find($planTrabajo);
-            $limite = 3;
-            if (sizeof($arrayPlanTrabajo) <= $limite) {
-                $result = array('operacion' => 'fallo', 'error' => 'No puede quitar mas visitas.');
+            $ciclo = $this->db()->find(new ctCiclo(), array('where' => 'fecha_inicio<="' . date("Y-m-d") . '" AND fecha_termino>="' . date("Y-m-d") . '"', 'limit' => 1));
+            if ($ciclo) {
+                $diaSemana = diaSemanaCiclo::obtenDiaSemanaCiclo($ciclo->fecha_inicio);
+                $planTrabajo = new htPlanTrabajo();
+                $planTrabajo->semana = $diaSemana['NumSemana'];
+                $planTrabajo->id_dia = $diaSemana['NumDia'];
+                $planTrabajo->id_usuario = $usuario;
+                $planTrabajo->activo = 0;
+                $arrayPlanTrabajo = $this->db()->find($planTrabajo);
+                $limite = 3;
+                if (sizeof($arrayPlanTrabajo) <= $limite) {
+                    $result = array('operacion' => 'fallo', 'error' => 'No puede quitar mas visitas.');
+                    echo json_encode($result);
+                    //return false;
+                    exit;
+                } else {
+                    $htPlan->delete();
+                    $result = array('operacion' => 'exito');
+                    echo json_encode($result);
+                    //return true;
+                    exit;
+                }
+            } else {
+                $result = array('operacion' => 'fallo', 'error' => 'Ciclo no encontrado para la fecha actual.');
                 echo json_encode($result);
                 //return false;
                 exit;
-            } else {
-                $htPlan->delete();
-                $result = array('operacion' => 'exito');
-                echo json_encode($result);
-                //return true;
-                exit;
             }
-        } else {
-            $result = array('operacion' => 'fallo', 'error' => 'Ciclo no encontrado para la fecha actual.');
-            echo json_encode($result);
-            //return false;
-            exit;
         }
     }
-    
-    
-    
+
     public function verPlanTrabajo() {
         Doo::loadClass('validaLogin');
         Doo::loadModel('htPlanTrabajo');
@@ -337,7 +338,6 @@ class planTrabajoController extends DooController {
         //Imprimimos la respuesta como objeto json
         echo json_encode($result);
     }
-    
 
 }
 

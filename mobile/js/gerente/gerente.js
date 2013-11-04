@@ -66,7 +66,7 @@ $(document).on('pageshow', '#agendaDoctores', function() {
         html: ""
     });
     $.get(
-            servidor + "sirac/API/medicos/verMedicos",
+            servidor + "sirac/API/medicos/verMedicos/" + getUsuario() + "/" + getToken(),
             {},
             function(data) {
                 result = jQuery.parseJSON(data);
@@ -183,7 +183,7 @@ function verDetallesMedico(idMedico) {
         html: ""
     });
     $.get(
-            servidor + "sirac/API/medicos/verInformacionMedico/" + idMedico,
+            servidor + "sirac/API/medicos/verInformacionMedico/" + idMedico + "/" + getUsuario() + "/" + getToken(),
             {},
             function(data) {
                 result = jQuery.parseJSON(data);
