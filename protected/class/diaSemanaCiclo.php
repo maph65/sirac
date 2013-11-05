@@ -12,7 +12,7 @@ class diaSemanaCiclo{
     public static function obtenDiaSemanaCiclo($fechaInicioCiclo){
         $hoy = strtotime(date("Y-m-d"));
         $inicioCiclo = strtotime($fechaInicioCiclo);
-        $numeroSemana = floor(abs(($hoy-$inicioCiclo)/(60*60*24*7)));
+        $numeroSemana = floor(abs(($hoy-$inicioCiclo)/(60*60*24*7)))+1;
         $numeroDia = date("N");
         $diaSemana = array('NumDia'=>$numeroDia, 'NumSemana'=>$numeroSemana);
         return $diaSemana;

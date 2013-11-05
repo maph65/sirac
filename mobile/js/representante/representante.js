@@ -85,7 +85,8 @@ $(document).on('pageshow', '#pedidos', function() {
                     $('#selectMedicamento').selectmenu('refresh');
                     $('#selectMedicamento').selectmenu(actualizarListaPresentaciones($('#selectMedicamento').val()));
                 } else {
-                    window.location = "index.html";
+                    alert('No hay medicamentos');
+                    //window.location = "index.html";
                 }
             });
     $.mobile.loading('hide');
@@ -115,7 +116,8 @@ function actualizarListaPresentaciones(idMedicamento){
                         $('#selectPresentacion').append(new Option(presentacion.descripcion, presentacion.id)).selectmenu('refresh',true );//.trigger('create');
                     }
                 } else {
-                    window.location = "index.html";
+                    alert('No hay presentaciones');
+                    //window.location = "index.html";
                 }
             });
     $.mobile.loading('hide');

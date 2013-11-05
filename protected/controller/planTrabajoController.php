@@ -65,6 +65,7 @@ class planTrabajoController extends DooController {
             $planTrabajo->id_dia = $diaSemana['NumDia'];
             $planTrabajo->id_usuario = $usuario;
             $arrayPlanTrabajo = $this->db()->find($planTrabajo);
+            //print_r($this->db()->showSQL());
             if (!empty($arrayPlanTrabajo)) {
                 foreach ($arrayPlanTrabajo as $medicoVisita) {
                     $htPlan = new htPlanTrabajo();

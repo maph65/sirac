@@ -338,12 +338,12 @@ CREATE  TABLE IF NOT EXISTS `sirac`.`rl_medico_representante` (
   PRIMARY KEY (`id_medico`, `usuario`) ,
   INDEX `fk_ct_medico_has_ct_usuario_ct_usuario1_idx` (`usuario` ASC) ,
   INDEX `fk_ct_medico_has_ct_usuario_ct_medico1_idx` (`id_medico` ASC) ,
-  CONSTRAINT `fk_ct_medico_has_ct_usuario_ct_medico1`
+  CONSTRAINT `fk_ct_medico_has_ct_usuario`
     FOREIGN KEY (`id_medico` )
     REFERENCES `sirac`.`ct_medico` (`id_medico` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ct_medico_has_ct_usuario_ct_usuario1`
+  CONSTRAINT `fk_ct_usuario_ct_medico`
     FOREIGN KEY (`usuario` )
     REFERENCES `sirac`.`ct_usuario` (`usuario` )
     ON DELETE NO ACTION
@@ -376,7 +376,7 @@ CREATE  TABLE IF NOT EXISTS `sirac`.`ct_presentacion` (
   `dosis` VARCHAR(45) NULL ,
   PRIMARY KEY (`id_presentacion`) ,
   INDEX `fk_ct_presentacion_ct_medicina1_idx` (`id_medicina` ASC) ,
-  CONSTRAINT `fk_ct_presentacion_ct_medicina1`
+  CONSTRAINT `fk_ct_pres_ct_medicina`
     FOREIGN KEY (`id_medicina` )
     REFERENCES `sirac`.`ct_medicina` (`id_medicina` )
     ON DELETE NO ACTION
@@ -390,18 +390,18 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sirac`.`ct_presentacion_has_ct_usuario` ;
 
 CREATE  TABLE IF NOT EXISTS `sirac`.`ct_presentacion_has_ct_usuario` (
-  `id_presentacion` INT NOT NULL ,
+  `id_presentacion` INT UNSIGNED NOT NULL ,
   `representante` VARCHAR(30) NOT NULL ,
   `fecha` TIMESTAMP NOT NULL ,
   PRIMARY KEY (`id_presentacion`, `representante`, `fecha`) ,
-  INDEX `fk_ct_presentacion_has_ct_usuario_ct_usuario1_idx` (`representante` ASC) ,
-  INDEX `fk_ct_presentacion_has_ct_usuario_ct_presentacion1_idx` (`id_presentacion` ASC) ,
-  CONSTRAINT `fk_ct_presentacion_has_ct_usuario_ct_presentacion1`
+  INDEX `presentacion_has_ct_usuario_idx` (`representante` ASC) ,
+  INDEX `fk_ct_usuario_ct_presentacion_idx` (`id_presentacion` ASC) ,
+  CONSTRAINT `fk_ct_presentacion_ct_usr`
     FOREIGN KEY (`id_presentacion` )
     REFERENCES `sirac`.`ct_presentacion` (`id_presentacion` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ct_presentacion_has_ct_usuario_ct_usuario1`
+  CONSTRAINT `fk_ct_usuario_representante`
     FOREIGN KEY (`representante` )
     REFERENCES `sirac`.`ct_usuario` (`usuario` )
     ON DELETE NO ACTION
