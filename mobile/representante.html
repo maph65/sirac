@@ -460,9 +460,11 @@
             <a href="#home" data-direction="reverse" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Chat</h1>
         </div>
-        <div data-role="content" style="text-align: center;">
+        <div data-role="content">
             <br>
             <ul id="autocompletarUsuarios" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Busca un usuario para iniciar una conversación" data-filter-theme="d" data-theme="d"></ul>
+            <br />
+            <h1>&Uacute;ltimas conversaciones</h1>
             <ul data-role="listview" data-theme="d" data-inset="true" id="ultimasConversaciones"> 
                 <li>No hay conversaciones recientes</li>
             </ul>
@@ -485,20 +487,18 @@
             <a href="#chat" data-direction="reverse" data-transition="slide" data-theme="a">Regresar</a>
             <h1>Chat</h1>
         </div>
-        <div data-role="content" style="text-align: center;">
+        <div data-role="content">
+            <p>Escriba su mensaje:</p>
+            <div style="width: 79%; display: inline-block;">
+                <input type="text" name="contenidoNuevoMensaje" id="contenidoNuevoMensaje" placeholder="Escriba su mensaje..."  />
+            </div>
+            <div style="width: 19%; display: inline-block; vertical-align: top;">
+                <button class="ui-btn-plain" onclick="enviarMensaje()">Enviar</button>
+            </div>
             <br>
             <ul data-role="listview" data-theme="d" data-inset="true" id="contenidoConversacion"> 
                 <li>No hay conversaciones recientes</li>
             </ul>
-            <p>Redacte su mensaje:</p>
-            <div style="width: 78%; display: inline-block;">
-                <input type="text" name="contenidoNuevoMensaje" id="contenidoNuevoMensaje" placeholder="Escriba su mensaje..."  />
-<!--                <textarea data-theme="b" id="contenidoNuevoMensaje" rows="10" cols="20"></textarea>-->
-            </div>
-            <div style="width: 18%; display: inline-block; vertical-align: top;">
-                <button class="ui-btn-plain" onclick="enviarMensaje()">Enviar</button>
-            </div>
-
         </div>
         <div data-role="footer" data-position="fixed">
             

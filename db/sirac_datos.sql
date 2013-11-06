@@ -420,6 +420,7 @@ CREATE  TABLE IF NOT EXISTS `sirac`.`ht_mensajes_usuario` (
   `emisor` VARCHAR(30) NOT NULL ,
   `receptor` VARCHAR(30) NOT NULL ,
   `leido` TINYINT NOT NULL DEFAULT 0 ,
+  `fecha_envio` TIMESTAMP NOT NULL DEFAULT NOW() ,
   PRIMARY KEY (`id_mensaje`) ,
   INDEX `fk_msj_emisor_idx` (`emisor` ASC) ,
   INDEX `fk_msj_receptor_idx` (`receptor` ASC) ,

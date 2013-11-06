@@ -1,3 +1,10 @@
 .text-button, .ui-link-inherit, a.ui-link-inherit{
     color: #000;
 }
+
+/*
+* estilo del chat*
+*/
+p.mensaje{
+    font-family: sans-serif, arial, verdana;
+}
