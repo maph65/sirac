@@ -49,5 +49,9 @@ $route['*']['/API/gerente/verInformacionRepresentante/:usuario/:token/:represent
 //Chat
 $route['*']['/API/chat/getNumeroMensajesNuevos/:usuario/:token'] = array('chatController', 'getNumeroMensajesNuevos');
 $route['*']['/API/chat/getListaUsuarios/:usuario/:token'] = array('chatController', 'getListaUsuarios');
+$route['*']['/API/chat/enviarMensaje/:usuario/:token'] = array('chatController', 'enviarMensaje');
 $route['*']['/API/chat/getConversacion/:usuario/:token/:segundoUsuario'] = array('chatController', 'getConversacion');
+$route['*']['/API/chat/getUltimasConversaciones/:usuario/:token'] = array('chatController', 'getUltimasConversaciones');
+
+
 ?>

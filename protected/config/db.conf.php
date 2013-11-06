@@ -6,7 +6,7 @@
 $dbmap['ctCiclo']['has_many']['htPlanTrabajo'] = array('foreign_key'=>'id_ciclo');
 
 //Tabla ctCorreoUsuario
-$dbmap['ctCorreoUsuario']['belongs_to']['ctUsuario'] = array('foreign_key'=>'id_usuario');
+$dbmap['ctCorreoUsuario']['belongs_to']['ctUsuario'] = array('foreign_key'=>'usuario');
 
 //Tabla ctDiaSemana
 $dbmap['ctDiaSemana']['has_many']['ctPlanTrabajo'] = array('foreign_key'=>'id_dia');
@@ -21,7 +21,7 @@ $dbmap['ctMedico']['has_many']['rlMedicoEspecialidad'] = array('foreign_key'=>'i
 $dbmap['ctMedico']['has_many']['rlMedicoSitio'] = array('foreign_key'=>'id_medico');
 
 //Tabla ctPlanTrabajo
-$dbmap['ctPlanTrabajo']['belongs_to']['ctUsuario'] = array('foreign_key'=>'id_usuario');
+$dbmap['ctPlanTrabajo']['belongs_to']['ctUsuario'] = array('foreign_key'=>'usuario');
 $dbmap['ctPlanTrabajo']['belongs_to']['ctMedico'] = array('foreign_key'=>'id_medico');
 $dbmap['ctPlanTrabajo']['belongs_to']['ctSitio'] = array('foreign_key'=>'id_sitio');
 $dbmap['ctPlanTrabajo']['belongs_to']['ctDia'] = array('foreign_key'=>'id_dia');
@@ -41,18 +41,18 @@ $dbmap['ctPrescriptor']['has_many']['htReportePlanTrabajo'] = array('foreign_key
 $dbmap['ctTipoUsuario']['has_many']['ctUsuario'] = array('foreign_key'=>'id_tipo_usuario');
 
 //Tabla ctUsuario
-$dbmap['ctUsuario']['has_many']['ctCorreoUsuario'] = array('foreign_key'=>'id_usuario');
-$dbmap['ctUsuario']['has_many']['ctPlanTrabajo'] = array('foreign_key'=>'id_usuario');
+$dbmap['ctUsuario']['has_many']['ctCorreoUsuario'] = array('foreign_key'=>'usuario');
+$dbmap['ctUsuario']['has_many']['ctPlanTrabajo'] = array('foreign_key'=>'usuario');
 $dbmap['ctUsuario']['belongs_to']['ctTipoUsuario'] = array('foreign_key'=>'id_tipo_usuario');
 $dbmap['ctUsuario']['belongs_to']['ctUsuario'] = array('foreign_key'=>'id_gerente');
 $dbmap['ctUsuario']['has_many']['ctUsuario'] = array('foreign_key'=>'id_gerente');
-$dbmap['ctUsuario']['has_many']['htPlanTrabajo'] = array('foreign_key'=>'id_usuario');
+$dbmap['ctUsuario']['has_many']['htPlanTrabajo'] = array('foreign_key'=>'usuario');
 $dbmap['ctUsuario']['has_many']['presentacionHasUsuario'] = array('foreign_key'=>'representante');
-$dbmap['ctUsuario']['has_many']['htMensajesUsuario'] = array('foreign_key'=>'receptor');
 $dbmap['ctUsuario']['has_many']['htMensajesUsuario'] = array('foreign_key'=>'emisor');
+$dbmap['ctUsuario']['has_many']['htMensajesUsuario'] = array('foreign_key'=>'receptor');
 
 //Tabla htPlanTrabajo
-$dbmap['htPlanTrabajo']['belongs_to']['ctUsuario'] = array('foreign_key'=>'id_usuario');
+$dbmap['htPlanTrabajo']['belongs_to']['ctUsuario'] = array('foreign_key'=>'usuario');
 $dbmap['htPlanTrabajo']['belongs_to']['ctMedico'] = array('foreign_key'=>'id_medico');
 $dbmap['htPlanTrabajo']['belongs_to']['ctSitio'] = array('foreign_key'=>'id_sitio');
 $dbmap['htPlanTrabajo']['belongs_to']['ctCiclo'] = array('foreign_key'=>'id_ciclo');
@@ -85,8 +85,8 @@ $dbmap['presentacionHasUsuario']['belongs_to']['ctUsuario'] = array('foreign_key
 $dbmap['presentacionHasUsuario']['belongs_to']['ctPresentacion'] = array('foreign_key'=>'id_presentacion');
 
 //Tabla htMensajesUsuario
-$dbmap['htMensajesUsuario']['belongs_to']['ctUsuario'] = array('foreign_key'=>'receptor');
-$dbmap['htMensajesUsuario']['belongs_to']['ctUsuario'] = array('foreign_key'=>'emisor');
+$dbmap['htMensajesUsuario']['belongs_to']['ctUsuario'] = array('foreign_key'=>'usuario');
+$dbmap['htMensajesUsuario']['belongs_to']['ctUsuario'] = array('foreign_key'=>'usuario');
 
 //Tabla rlReporteMedicamento
 $dbmap['rlReporteMedicamento']['belongs_to']['ctPresentacion'] = array('foreign_key'=>'id_presentacion');

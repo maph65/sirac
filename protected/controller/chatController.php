@@ -72,6 +72,66 @@ class chatController extends DooController {
         echo json_encode($result);
     }
 
+    public function enviarMensaje() {
+        Doo::loadClass('validaLogin');
+        Doo::loadModel('htMensajesUsuario');
+        Doo::loadModel('ctUsuario');
+        Doo::autoload('DooDbExpression');
+        $token = $this->params['token'];
+        $usuario = $this->params['usuario'];
+        $result = array();
+        if (validaLogin::validaToken($token, $usuario)) {
+            $result = array('acceso' => 'correcto');
+            if (isset($_POST['mensaje']) && isset($_POST['destinatario'])) {
+                $destinatario = stripslashes(htmlentities($_POST['destinatario']));
+                $mensaje = stripslashes(htmlentities($_POST['mensaje']));
+                if (strlen($mensaje) > 0 && strlen($destinatario) > 0) {
+                    $ctUsuario = new ctUsuario();
+                    $ctUsuario->usuario = $destinatario;
+                    if ($ctUsuario->find()) {
+                        $objMensaje = new htMensajesUsuario();
+                        $objMensaje->emisor = $usuario;
+                        $objMensaje->receptor = $destinatario;
+                        $objMensaje->leido = 0;
+                        $objMensaje->mensaje = $mensaje;
+                        $objMensaje->fecha_envio = DooDbExpression('NOW()');
+                    }else{
+                        $result['registro'] = 'error';
+                        $result['error'] = 'No existe el usuario.';
+                    }
+                } else {
+                    $result['registro'] = 'error';
+                    $result['error'] = 'El mensaje esta vacío.';
+                }
+            } else {
+                $result['registro'] = 'error';
+                $result['error'] = 'No se recibío el mensaje o el usuario destinatario';
+            }
+        } else {
+            $result = array('acceso' => 'denegado');
+        }
+        //Imprimimos la respuesta como objeto json
+        echo json_encode($result);
+    }
+
+    public function getUltimasConversaciones() {
+        Doo::loadClass('validaLogin');
+        Doo::loadModel('htMensajesUsuario');
+        $token = $this->params['token'];
+        $usuario = $this->params['usuario'];
+        $result = array();
+        if (validaLogin::validaToken($token, $usuario)) {
+            $result = array('acceso' => 'correcto');
+            $arrayUsuarios = $this->db()->relate(new htMensajesUsuario(), 'ctUsuario', array('select' => 'DISTINCT emisor'));
+            //print_r($arrayUsuarios);
+            //print_r($this->db()->showSQL());
+        } else {
+            $result = array('acceso' => 'denegado');
+        }
+        //Imprimimos la respuesta como objeto json
+        echo json_encode($result);
+    }
+
 }
 
 ?>
