@@ -93,7 +93,8 @@ class chatController extends DooController {
                     //Esta variable indica si el mensaje es para nosotros o nosotros lo enviamos
                     $temp['recibido'] = FALSE;
                 }
-                $temp['mensaje'] = htmlentities(utf8_decode($msj->mensaje));
+                $temp['idMensaje'] = $msj->id_mensaje;
+                $temp['mensaje'] = utf8_decode($msj->mensaje);
                 $temp['fecha'] = $msj->fecha_envio;
                 $result['mensajes'][] = $temp;
             }
@@ -138,7 +139,8 @@ class chatController extends DooController {
                         //Esta variable indica si el mensaje es para nosotros o nosotros lo enviamos
                         $temp['recibido'] = FALSE;
                     }
-                    $temp['mensaje'] = htmlentities(utf8_decode($msj->mensaje));
+                    $temp['idMensaje'] = $msj->id_mensaje;
+                    $temp['mensaje'] = utf8_decode($msj->mensaje);
                     $temp['fecha'] = $msj->fecha_envio;
                     $result['mensajes'][] = $temp;
                 }

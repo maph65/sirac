@@ -494,7 +494,7 @@
             <div id="redaccionMensaje">
                 <p>Escriba su mensaje:</p>
                 <div style="width: 79%; display: inline-block;">
-                    <input type="text" name="contenidoNuevoMensaje" id="contenidoNuevoMensaje" placeholder="Escriba su mensaje..."  />
+                    <input type="text" name="contenidoNuevoMensaje" id="contenidoNuevoMensaje"  onkeypress="{if (event.keyCode==13) enviarMensaje()}" placeholder="Escriba su mensaje..."  />
                 </div>
                 <div style="width: 19%; display: inline-block; vertical-align: top;">
                     <button class="ui-btn-plain" onclick="enviarMensaje()">Enviar</button>

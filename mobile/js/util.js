@@ -1,6 +1,8 @@
 var usuarioMensajeChat = "";
+var actualizaMensajes;
+var idUltimoMensajeCargado = 0;
 
-function enviarMensaje() {
+function enviarMensaje(){
     $.post(
             servidor + "sirac/API/chat/enviarMensaje/" + getUsuario() + "/" + getToken(),
             {'mensaje': $('#contenidoNuevoMensaje').val(), 'destinatario': usuarioMensajeChat},
@@ -11,6 +13,8 @@ function enviarMensaje() {
                 $("#contenidoConversacion").append('<li style="text-align:right; background-color:#BBDEFF;">' + $('#contenidoNuevoMensaje').val() + '</li>');
                 $('#contenidoNuevoMensaje').val("");
                 $("#contenidoConversacion").listview("refresh");
+                $.mobile.silentScroll($("#contenidoConversacion").height() + 400);
+                document.getElementById("contenidoNuevoMensaje").focus();
             } else {
                 alert('Ocurrio un error al enviar su mensaje. Verifique su conexión a Internet y vuelva a intentarlo.');
             }
@@ -93,7 +97,6 @@ function cargarConversacion(usuario) {
             {},
             function(data) {
                 result = jQuery.parseJSON(data);
-                var text = "";
                 if (result.acceso === "correcto") {
                     //$("#contenidoConversacion").html('<li><p>La persona tal dijo a las 23:34:</p>Contenido del mensaje</li>');
                     $("#contenidoConversacion").html('');
@@ -104,6 +107,7 @@ function cargarConversacion(usuario) {
                             } else {
                                 $("#contenidoConversacion").append('<li style="text-align:right; background-color:#BBDEFF;"><p>Usted dijo el ' + result.mensajes[i].fecha + ':</p>' + result.mensajes[i].mensaje + '</li>');
                             }
+                            idUltimoMensajeCargado = result.mensajes[i].idMensaje;
                         }
                     } else {
                         $("#contenidoConversacion").html('<li>No ha iniciado una conversaci&oacute;n con este usuario.</li>');
@@ -118,8 +122,35 @@ function cargarConversacion(usuario) {
 }
 
 
+//Funcion que agrega los mensajes nuevos
+function cargarMensajesNuevos() {
+    $.get(
+            servidor + "sirac/API/chat/cargarMensajesNuevos/" + getUsuario() + "/" + getToken() + "/" + usuarioMensajeChat + "/" + idUltimoMensajeCargado,
+            {},
+            function(data) {
+                result = jQuery.parseJSON(data);
+                if (result.acceso === "correcto") {
+                    if (result.cantidadNuevosMensajes > 0) {
+                        for (var i = 0; i < result.mensajes.length; i++) {
+                            $("#contenidoConversacion").append('<li><p>' + result.segundoUsuario + ' dijo el ' + result.mensajes[i].fecha + ':</p>' + result.mensajes[i].mensaje + '</li>');
+                            idUltimoMensajeCargado = result.mensajes[i].idMensaje;
+                        }
+                        $("#contenidoConversacion").listview("refresh");
+                        $.mobile.silentScroll($("#contenidoConversacion").height() + 400);
+                    }
+                }
+            });
+
+}
+
+
+
 $(document).on("pageshow", "#verConversacion", function() {
     $.mobile.silentScroll($(window).height() + 400);
+    actualizaMensajes = setInterval('cargarMensajesNuevos()', 4000);
+}).on("pagehide", "#verConversacion", function() {
+    clearInterval(actualizaMensajes);
+    idUltimoMensajeCargado = 0;
 });
 
 $(document).on("pageinit", "#verConversacion", function() {
@@ -129,7 +160,3 @@ $(document).on("pageinit", "#verConversacion", function() {
         });
     }
 });
-
-function cargarMensajesNuevos(){
-    
-}
