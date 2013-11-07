@@ -1,3 +1,19 @@
+$(document).on('pageshow', '#home', function() {
+    //verificamos el estado del plan de trabajo del dia de hoy
+    $.get(
+            servidor + "sirac/API/chat/getNumeroMensajesNuevos/" + getUsuario() + "/" + getToken(),
+            {},
+            function(data) {
+                //alert(data);
+                result = jQuery.parseJSON(data);
+                if (result.acceso === "correcto") {
+                    $("#noLeidos").html(result.sinLeer + ' Mensajes sin leer');
+                } else {
+                    window.location = "index.html";
+                }
+            });
+});
+
 $(document).on('pageshow', '#planes', function() {
     $.mobile.loading('show', {
         text: 'Actualizando información...',

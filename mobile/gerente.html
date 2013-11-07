@@ -20,6 +20,7 @@
 
     <script src="js/login/login.js" type="text/javascript"></script>
     <script src="js/gerente/gerente.js" type="text/javascript"></script>
+    <script src="js/util.js" type="text/javascript"></script>
 </head>
 
 <body onload="validaUsuario()">
@@ -38,6 +39,7 @@
 <!--                <li><a href="#repPersistidos" data-transition="slide">Reportes persisitidos</a></li>-->
                 <li><a href="#agendaDoctores" data-transition="slide">Agenda de M&eacute;dicos</a></li>
                 <li><a href="#mensajes" data-transition="slide">Notificaciones</a></li>
+                <li><a href="#chat" data-transition="slide">Chat<span class="ui-li-count" id="noLeidos">0</span></a></li>
             </ul>
             <ul data-role="listview" data-theme="d" data-inset="true"> 
                 <li><a href="http://www.cellpharma.com.mx/" target="_blank">CellPharma</a></li>
@@ -252,6 +254,65 @@
             <div data-role="navbar">
                 <ul>
                     <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
+                    <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
+                    <li><a href="index.html" onclick="window.localStorage.clear();" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
+                </ul>
+            </div><!-- /navbar -->
+        </div><!-- /footer -->
+    </div>
+    
+    <!--Chat-->
+    <div data-role="page" id="chat" data-theme="a">
+        <div data-role="header" data-position="inline">
+            <a href="#home" data-direction="reverse" data-transition="slide" data-theme="a">Regresar</a>
+            <h1>Chat</h1>
+        </div>
+        <div data-role="content">
+            <br>
+            <ul id="autocompletarUsuarios" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Busca un usuario para iniciar una conversación" data-filter-theme="d" data-theme="d"></ul>
+            <br />
+            <h1>&Uacute;ltimas conversaciones</h1>
+            <ul data-role="listview" data-theme="d" data-inset="true" id="ultimasConversaciones"> 
+                <li>No hay conversaciones recientes</li>
+            </ul>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
+                    <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
+                    <li><a href="index.html" onclick="window.localStorage.clear();" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
+                </ul>
+            </div><!-- /navbar -->
+        </div><!-- /footer -->
+    </div>
+
+
+    <!--ver conversacion-->
+    <div data-role="page" id="verConversacion" data-theme="a">
+        <div data-role="header" data-position="inline">
+            <a href="#chat" data-direction="reverse" data-transition="slide" data-theme="a">Regresar</a>
+            <h1>Chat</h1>
+        </div>
+        <div data-role="content">
+            <ul data-role="listview" data-theme="d" data-inset="true" id="contenidoConversacion"> 
+                <li>No hay conversaciones recientes</li>
+            </ul>
+            <div id="redaccionMensaje">
+                <p>Escriba su mensaje:</p>
+                <div style="width: 79%; display: inline-block;">
+                    <input type="text" name="contenidoNuevoMensaje" id="contenidoNuevoMensaje"  onkeypress="{if (event.keyCode==13) enviarMensaje()}" placeholder="Escriba su mensaje..."  />
+                </div>
+                <div style="width: 19%; display: inline-block; vertical-align: top;">
+                    <button class="ui-btn-plain" onclick="enviarMensaje()">Enviar</button>
+                </div>
+            </div>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
+                    <li><a href="#chat" data-direction="reverse" data-transition="slide"><img src="media/back.png"><br />Regresar</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" onclick="window.localStorage.clear();" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>

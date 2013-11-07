@@ -147,10 +147,11 @@ function cargarMensajesNuevos() {
 
 $(document).on("pageshow", "#verConversacion", function() {
     $.mobile.silentScroll($(window).height() + 400);
-    actualizaMensajes = setInterval('cargarMensajesNuevos()', 4000);
+    actualizaMensajes = setInterval('cargarMensajesNuevos()', 9000);
 }).on("pagehide", "#verConversacion", function() {
     clearInterval(actualizaMensajes);
     idUltimoMensajeCargado = 0;
+    usuarioMensajeChat = "";
 });
 
 $(document).on("pageinit", "#verConversacion", function() {
