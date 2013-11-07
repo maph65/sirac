@@ -488,20 +488,20 @@
             <h1>Chat</h1>
         </div>
         <div data-role="content">
-            <p>Escriba su mensaje:</p>
-            <div style="width: 79%; display: inline-block;">
-                <input type="text" name="contenidoNuevoMensaje" id="contenidoNuevoMensaje" placeholder="Escriba su mensaje..."  />
-            </div>
-            <div style="width: 19%; display: inline-block; vertical-align: top;">
-                <button class="ui-btn-plain" onclick="enviarMensaje()">Enviar</button>
-            </div>
-            <br>
             <ul data-role="listview" data-theme="d" data-inset="true" id="contenidoConversacion"> 
                 <li>No hay conversaciones recientes</li>
             </ul>
+            <div id="redaccionMensaje">
+                <p>Escriba su mensaje:</p>
+                <div style="width: 79%; display: inline-block;">
+                    <input type="text" name="contenidoNuevoMensaje" id="contenidoNuevoMensaje" placeholder="Escriba su mensaje..."  />
+                </div>
+                <div style="width: 19%; display: inline-block; vertical-align: top;">
+                    <button class="ui-btn-plain" onclick="enviarMensaje()">Enviar</button>
+                </div>
+            </div>
         </div>
         <div data-role="footer" data-position="fixed">
-            
             <div data-role="navbar">
                 <ul>
                     <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>

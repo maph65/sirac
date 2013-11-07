@@ -8,7 +8,7 @@ function enviarMensaje() {
         result = jQuery.parseJSON(data);
         if (result.acceso === "correcto") {
             if (result.registro === "exitoso") {
-                $("#contenidoConversacion").prepend('<li style="text-align:right; background-color:#BBDEFF;">' + $('#contenidoNuevoMensaje').val() + '</li>');
+                $("#contenidoConversacion").append('<li style="text-align:right; background-color:#BBDEFF;">' + $('#contenidoNuevoMensaje').val() + '</li>');
                 $('#contenidoNuevoMensaje').val("");
                 $("#contenidoConversacion").listview("refresh");
             } else {
@@ -20,9 +20,6 @@ function enviarMensaje() {
     });
 
 }
-
-
-//chat
 
 $(document).on("pageshow", "#chat", function() {
     $.mobile.loading('show', {
@@ -37,7 +34,7 @@ $(document).on("pageshow", "#chat", function() {
             function(data) {
                 result = jQuery.parseJSON(data);
                 if (result.acceso === "correcto") {
-                    if (result.usuarios.length > 0) {
+                    if (result.numeroConversaciones > 0) {
                         $('#ultimasConversaciones').html('');
                         for (var i = 0; i < result.usuarios.length; i++) {
                             $('#ultimasConversaciones').append('<li onclick="cargarConversacion(\'' + result.usuarios[i].usuario + '\')"><a href="#">' + result.usuarios[i].nombre + '<a></li>');
@@ -100,15 +97,15 @@ function cargarConversacion(usuario) {
                 if (result.acceso === "correcto") {
                     //$("#contenidoConversacion").html('<li><p>La persona tal dijo a las 23:34:</p>Contenido del mensaje</li>');
                     $("#contenidoConversacion").html('');
-                    if(result.mensajes.length>0){
-                        for(var i=0; i<result.mensajes.length;i++){
-                            if(result.mensajes[i].recibido){
-                                $("#contenidoConversacion").append('<li><p>'+result.segundoUsuario+' dijo el '+ result.mensajes[i].fecha +':</p>'+ result.mensajes[i].mensaje +'</li>');
-                            }else{
-                                $("#contenidoConversacion").append('<li style="text-align:right; background-color:#BBDEFF;"><p>Usted dijo el '+ result.mensajes[i].fecha +':</p>'+ result.mensajes[i].mensaje +'</li>');
+                    if (result.tamanioConversacion > 0) {
+                        for (var i = 0; i < result.mensajes.length; i++) {
+                            if (result.mensajes[i].recibido) {
+                                $("#contenidoConversacion").append('<li><p>' + result.segundoUsuario + ' dijo el ' + result.mensajes[i].fecha + ':</p>' + result.mensajes[i].mensaje + '</li>');
+                            } else {
+                                $("#contenidoConversacion").append('<li style="text-align:right; background-color:#BBDEFF;"><p>Usted dijo el ' + result.mensajes[i].fecha + ':</p>' + result.mensajes[i].mensaje + '</li>');
                             }
                         }
-                    }else{
+                    } else {
                         $("#contenidoConversacion").html('<li>No ha iniciado una conversaci&oacute;n con este usuario.</li>');
                     }
                     $.mobile.changePage('#verConversacion', {
@@ -120,6 +117,11 @@ function cargarConversacion(usuario) {
             });
 }
 
+
+$(document).on("pageshow", "#verConversacion", function() {
+    $.mobile.silentScroll($(window).height() + 400);
+});
+
 $(document).on("pageinit", "#verConversacion", function() {
     if (usuarioMensajeChat.length === 0) {
         $.mobile.changePage('#chat', {
@@ -127,3 +129,7 @@ $(document).on("pageinit", "#verConversacion", function() {
         });
     }
 });
+
+function cargarMensajesNuevos(){
+    
+}
