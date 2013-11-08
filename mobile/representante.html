@@ -287,8 +287,48 @@
                 <div class="ui-block-a"><div class="ui-body ui-body-d">Tel&eacute;fono</div></div>
                 <div class="ui-block-b"><div class="ui-body ui-body-d" id="reporteSitioTelefono">&nbsp;</div></div>
             </div>
+
+            <!--Entrega-->
+
+            <h2>Reporte de entregas</h2>
+            <div id="tablaEntregas" style="text-align: left; width: 100%;">
+                <table width="90%">
+                    <tr>
+                        <td width="40%">Seleccione un medicamento:</td>
+                        <td width="60%">
+                            <select name="selectMedicamento" id="selectMedicamento" onChange="actualizarListaPresentaciones(this.value)">
+                                <option value="0">None</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="40%">Seleccione una presentaci&oacute;n:</td>
+                        <td width="60%">
+                            <select name="selectMedicamento" id="selectPresentacion">
+                                <option value="0">None</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="40%">Cantidad entregada:</td>
+                        <td width="60%">
+                            <input id="cantidadEnt" 
+                                   onkeypress="validaNumero(this);" onkeyup="validaNumero(this);" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br/></td>
+                        <td width="60%">
+                            <a href="#" data-role="button" data-theme="a" onClick="GuardarReporte(reporteHtPlanTrabajoID)">Agregar</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+
             <h2>Reporte de la visita</h2>
-            <div id="tablaReporte" style="text-align: center; width: 100%;">
+            <div id="tablaReporte" style="text-align: left; width: 100%;">
                 <table>
                     <tr>
                         <td width="200">Cuenta con farmacia:</td>
@@ -300,6 +340,8 @@
                                 </select> 
                             </div>
                         </td>
+                    </tr>
+                    <tr>
                         <td width="300">Prescriptor:</td>
                         <td width="200">
                             <div data-role="fieldcontain">
@@ -311,6 +353,8 @@
                                 </select>
                             </div>
                         </td>
+                    </tr>
+                    <tr>
                         <td width="300">Potencial:</td>
                         <td width="200">
                             <div data-role="fieldcontain">
@@ -322,7 +366,28 @@
                             </div>
                         </td>
                     </tr>
+                    <tr>
+                        <td width="300">Observaciones:</td>
+                        <td width="600">
+                            <textarea id="observacion"></textarea>
+                        </td>
+                    </tr>
                 </table>
+            </div>
+            <br />
+            <h2>Otros detalles de la visita</h2>
+            <div class="ui-grid-a ui-responsive">
+                <div class="ui-block-a">
+                    <div class="ui-body ui-body-d" style="padding-top: 12px;">Visita con gerente<br />(Se enviar&aacute; una notificaci&oacute;n a su gerente)</div>
+                </div>
+                <div class="ui-block-b">
+                    <div class="ui-body ui-body-d" style="top: -11px;">
+                        <select name="slider" id="sliderConRepresentante" data-role="slider">
+                            <option value="0">No</option>
+                            <option value="1">Si</option>
+                        </select> 
+                    </div>
+                </div>
             </div>
             <div data-role="popup" data-transition="fade" id="reporteGuardado">
                 <p>Reporte guardado.<p>
@@ -333,6 +398,7 @@
             <div data-role="navbar">
                 <ul>
                     <li><a href="#home" data-direction="reverse" data-transition="slide"><img src="media/53-house.png"><br />Inicio</a></li>
+                    <li><a href="#reporte" data-transition="slide"><img src="media/back.png"><br />Regresar</a></li>
                     <li><a href="about.html" data-transition="flip"><img src="media/logo_enginetec.png"><br />Acerca de SIRAC</a></li>
                     <li><a href="index.html" onclick="window.localStorage.clear();" data-transition="flip"><img src="media/102-walk.png"><br />Salir</a></li>
                 </ul>
